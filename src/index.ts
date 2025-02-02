@@ -4,7 +4,7 @@ import http from 'http';
 // import cookieParser from 'cookie-parser';
 // import compression from 'compression';
 import cors from 'cors';
-import pool from '../src/db/db';
+import pool from './config/db';
 
 const app = express();
 
