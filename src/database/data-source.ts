@@ -13,6 +13,10 @@ const DB_NAME = process.env.DB_NAME;
 const DB_HOST = process.env.DB_HOST;
 const DB_PORT = Number(process.env.DB_PORT ?? "5432");
 
+/*
+ IMPORTANT: This should never be used in production. only for development purposes
+ I should add checks whenever the database or api is up on production to avoid issues.
+*/
 
 // used to see if the database exists and if not create it
 const createDatabaseIfNotExists = async () => {
