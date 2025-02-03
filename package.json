@@ -4,7 +4,12 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "update-database": "npm run typeorm -- migration:run -d src/database/data-source.ts",
+    "add-migration": "cross-env npm run typeorm -- migration:generate src/database/migrations/%npm_config_name% -d src/database/data-source.ts",
+    "revert-migration": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
+    "migrate:show": "npm run typeorm -- migration:show -d src/database/data-source.ts"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +30,7 @@
     "@types/pg": "^8.11.11",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "http": "^0.0.1-security",
@@ -32,7 +38,10 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.13.1",
     "pg-hstore": "^2.3.4",
+    "reflect-metadata": "^0.2.2",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "tsconfig-paths": "^4.2.0",
+    "typeorm": "^0.3.20"
   }
 }
