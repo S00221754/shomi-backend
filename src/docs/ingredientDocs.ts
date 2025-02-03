@@ -26,8 +26,56 @@ const ingredientDocs = {
           },
         },
       },
+  
+      get: {
+        summary: "Get all ingredients",
+        tags: ["Ingredient"],
+        responses: {
+          200: {
+            description: "List of ingredients",
+          },
+          500: {
+            description: "Server error",
+          },
+        },
+      },
     },
+    "/api/v1/ingredient/{id}": {
+  get: {
+    summary: "Get an ingredient by ID",
+    tags: ["Ingredient"],
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        required: true,
+        description: "The ID of the ingredient to retrieve",
+        schema: {
+          type: "string",
+        },
+      },
+    ],
+    responses: {
+      200: {
+        description: "Ingredient found",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: "#/components/schemas/IngredientInput",
+            },
+          },
+        },
+      },
+      404: {
+        description: "Ingredient not found",
+      },
+      500: {
+        description: "Server error",
+      },
+    },
+  },
+}
   };
   
-export default ingredientDocs;
+  export default ingredientDocs;
   

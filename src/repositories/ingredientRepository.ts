@@ -1,6 +1,21 @@
 import pool from "../config/db";
 import { Ingredient, IngredientInput } from "../types/ingredient";
 
+export const getIngredients = async (): Promise<Ingredient[]> => {
+    const query = `SELECT * FROM public."tbl_Ingredients";`;
+    const { rows } = await pool.query(query);
+
+    return rows;
+};
+
+export const getIngredientById = async (id: string): Promise<Ingredient> => {
+    const query = `SELECT * FROM public."tbl_Ingredients" WHERE "id" = $1;`;
+    const { rows } = await pool.query(query, [id]);
+
+    return rows[0];
+};
+
+
 export const addIngredient = async (ingredient: IngredientInput): Promise<Ingredient> => {
     const query = `
         INSERT INTO public."tbl_Ingredients" ("ING_Name", "ING_BrandName", "ING_KeyWords", "ING_Units", "ING_Barcode")
@@ -52,4 +67,4 @@ export const ingredientExists = async (name: string, brand?: string, barcode?: s
     return rows.length > 0;
 };
 
-export default { addIngredient, findIngredientByName, findIngredientByBarcode, ingredientExists };
+export default { getIngredients, getIngredientById, addIngredient, findIngredientByName, findIngredientByBarcode, ingredientExists };

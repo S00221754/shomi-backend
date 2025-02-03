@@ -20,4 +20,16 @@ const createIngredient = async (ingredient: IngredientInput) => {
     return result;
 };
 
-export default { createIngredient };
+// get ingredients
+const getIngredients = async () => {
+    const result = await ingredientRepository.getIngredients();
+    return result;
+}
+
+// get ingredient by id
+const getIngredientById = async (id: string) => {
+    const result = await ingredientRepository.getIngredientById(id);
+    return result;
+}
+
+export default { createIngredient, getIngredients, getIngredientById };
