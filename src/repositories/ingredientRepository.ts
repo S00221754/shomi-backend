@@ -1,4 +1,3 @@
-import pool from "../config/db";
 import { IngredientInput } from "../types/ingredient";
 import { Ingredient } from "../entities/Ingredient";
 import AppDataSource from "../database/data-source";
