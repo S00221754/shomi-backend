@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, OneToMany } from "typeorm";
+import { UserIngredient } from "./UserIngredient";
 
 @Entity("tbl_Users")
 export class User extends BaseEntity {
@@ -16,4 +17,7 @@ export class User extends BaseEntity {
 
   @CreateDateColumn({ type: "timestamp" })
   created_at: Date;
+
+  @OneToMany(() => UserIngredient, (userIngredient) => userIngredient.user)
+  userIngredients: UserIngredient[];
 }
