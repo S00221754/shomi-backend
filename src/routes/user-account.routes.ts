@@ -9,7 +9,7 @@ const router = express.Router();
  *   post:
  *     summary: Register a new user
  *     tags:
- *       - Authentication
+ *       - User Account
  *     requestBody:
  *       description: User signup details
  *       required: true
@@ -44,7 +44,7 @@ router.post('/signup', signUp);
  *   post:
  *     summary: Log in a user
  *     tags:
- *       - Authentication
+ *       - User Account
  *     requestBody:
  *       description: User login credentials
  *       required: true
