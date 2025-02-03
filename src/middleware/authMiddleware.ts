@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction): void => {
     const token = req.header('Authorization')?.split(' ')[1];
-
+    
     if (!token) {
-        return res.status(401).json({ message: "Unauthorized" });
+        res.status(401).json({ message: "Unauthorized" });
+        return;
     }
 
     try {
@@ -14,6 +15,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
         next();
     } catch (error) {
         res.status(403).json({ message: "Invalid token" });
+        return;
     }
 };
 

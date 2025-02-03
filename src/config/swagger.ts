@@ -11,6 +11,13 @@ const options: swaggerJsdoc.Options = {
       description: "API documentation for my TypeScript Express API",
     },
     components: {
+      securitySchemes:{
+        BearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+        },
+      },
       schemas: {
         IngredientInput: {
           type: "object",

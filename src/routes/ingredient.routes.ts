@@ -1,11 +1,12 @@
 import express from "express";
 import * as ingredientController from "../controllers/ingredient.controller";
+import authMiddleware from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 router.post("/", ingredientController.createIngredient);
 
-router.get("/", ingredientController.getIngredients);
+router.get("/", authMiddleware,  ingredientController.getIngredients);
 
 router.get("/:id", ingredientController.getIngredientById);
 

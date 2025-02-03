@@ -30,6 +30,7 @@ const ingredientDocs = {
         get: {
             summary: "Get all ingredients",
             tags: ["Ingredient"],
+            security: [{ BearerAuth: [] as any[] }],
             responses: {
                 200: {
                     description: "List of ingredients",
