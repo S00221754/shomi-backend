@@ -29,7 +29,48 @@ const getIngredients = async () => {
 // get ingredient by id
 const getIngredientById = async (id: string) => {
     const result = await ingredientRepository.getIngredientById(id);
+
+    if(!result){
+      throw new createHttpError.NotFound();
+    }
+
     return result;
 }
 
-export default { createIngredient, getIngredients, getIngredientById };
+// edit an ingredient
+const editIngredient = async (id: string, editedIngredient: IngredientInput) => {
+
+    const existingIngredient = await ingredientRepository.getIngredientById(id);
+
+    if(!existingIngredient){
+      throw new createHttpError.NotFound();
+    }
+
+    const result = await ingredientRepository.editIngredient(id,editedIngredient);
+
+    if(!result){
+      throw new createHttpError.InternalServerError();
+    }
+
+    return result;
+};
+
+// delete an ingredient
+const deleteIngredient = async (id: string) => {
+
+    const existingIngredient = await ingredientRepository.getIngredientById(id);
+
+    if(!existingIngredient){
+      throw new createHttpError.NotFound();
+    }
+
+    const result = await ingredientRepository.deleteIngredient(id);
+
+    if(!result){
+      throw new createHttpError.InternalServerError();
+    }
+
+    return result;
+};
+
+export default { createIngredient, getIngredients, getIngredientById, editIngredient, deleteIngredient };

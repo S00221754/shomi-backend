@@ -9,4 +9,8 @@ router.get("/", ingredientController.getIngredients);
 
 router.get("/:id", ingredientController.getIngredientById);
 
+router.put("/:id", ingredientController.editIngredient);
+
+router.delete("/:id", ingredientController.deleteIngredient);
+
 export default router;
