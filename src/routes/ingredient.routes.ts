@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", ingredientController.createIngredient);
 
-router.get("/", authMiddleware,  ingredientController.getIngredients);
+router.get("/",  ingredientController.getIngredients);
 
 router.get("/:id", ingredientController.getIngredientById);
 

@@ -16,11 +16,7 @@ const createUser = async (name: string, email: string, password: string) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const result = await userRepository.createUser(name, email, hashedPassword);
-
-    if (!result.success) {
-        throw new createHttpError.InternalServerError();
-    }
-
+    
     return result;
 };
 
