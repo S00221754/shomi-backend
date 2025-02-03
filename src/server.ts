@@ -1,24 +1,41 @@
-import http from 'http';
-import app from './app';
-import { createDatabaseIfNotExists } from './database/data-source';
-import dotenv from 'dotenv';
+import "reflect-metadata";
+import AppDataSource from "./database/data-source";
+import { createDatabaseIfNotExists } from "./database/data-source";
+import app from "./app";
 
-dotenv.config()
+// ✅ Function to check if database creation is needed
+const shouldCreateDatabase = async (): Promise<boolean> => {
+    try {
+        await createDatabaseIfNotExists();
+        return true;
+    } catch (error) {
+        console.log("❌ Database check failed, assuming production mode.");
+        return false;
+    }
+};
 
-const server = http.createServer(app);
-const ENV = process.env.NODE_ENV ?? "development";
+// ✅ Start server after checking the database
+const startServer = () => {
+    app.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
+};
 
-// figure out a better way to do this without relying on environment variables
-if (ENV !== "production") {
-    createDatabaseIfNotExists()
-      .then(() => {
-        server.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
-      })
-      .catch((error) => {
+// ✅ Initialize TypeORM and conditionally create the database
+(async () => {
+    try {
+        const dbNeedsCreation = await shouldCreateDatabase();
+
+        if (dbNeedsCreation) {
+            console.log("⚡ Database checked/created. Initializing TypeORM...");
+        } else {
+            console.log("🚀 Skipping database creation (running in production mode or DB exists).");
+        }
+
+        await AppDataSource.initialize();
+        console.log("✅ Database initialized successfully");
+
+        startServer();
+    } catch (error) {
         console.error("❌ Failed to initialize database:", error);
         process.exit(1);
-      });
-  } else {
-    console.log("🚀 Running in production mode. Skipping database creation.");
-    server.listen(3000, () => console.log("🚀 Server running on http://localhost:3000"));
-  }
+    }
+})();

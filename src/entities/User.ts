@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn } from "typeorm";
 
-@Entity()
-export class tbl_User extends BaseEntity {
+@Entity("tbl_Users")
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   user_id: string;
 
