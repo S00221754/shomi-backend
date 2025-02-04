@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, CreateDateColumn, OneToMany } from "typeorm";
 import { UserIngredient } from "./UserIngredient";
-
+import { Recipe } from "./Recipe";
 @Entity("tbl_Users")
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
@@ -20,4 +20,7 @@ export class User extends BaseEntity {
 
   @OneToMany(() => UserIngredient, (userIngredient) => userIngredient.user)
   userIngredients: UserIngredient[];
+
+  @OneToMany(() => Recipe, (recipe) => recipe.author)
+  recipes: Recipe[];
 }
