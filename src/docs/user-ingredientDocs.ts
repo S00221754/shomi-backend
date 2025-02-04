@@ -200,7 +200,125 @@ const userIngredientDocs = {
         },
       },
     },
+    patch: {
+      summary: "Update a user's pantry ingredient",
+      tags: ["User Ingredients (Pantry)"],
+      description: "Allows a user to update unitQuantity, totalAmount, or expiry_date for an ingredient in their pantry.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+            format: "uuid",
+          },
+          description: "The unique ID of the user's pantry ingredient entry to be updated.",
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              properties: {
+                unitQuantity: {
+                  type: "integer",
+                  minimum: 0,
+                  description: "The new unit quantity (e.g., 2 bottles). Must be a non-negative integer.",
+                },
+                totalAmount: {
+                  type: "number",
+                  format: "double",
+                  minimum: 0,
+                  nullable: true,
+                  description: "The new total amount (e.g., 500g flour). Must be a non-negative number or null.",
+                },
+                unitType: {
+                  type: "string",
+                  maxLength: 50,
+                  nullable: true,
+                  description: "The unit of measurement (e.g., g, kg, ml, L, cups). Maximum length: 50 characters.",
+                },
+                expiry_date: {
+                  type: "string",
+                  format: "date-time",
+                  nullable: true,
+                  description: "The new expiry date for the ingredient in ISO 8601 format (e.g., '2025-12-31T00:00:00Z').",
+                },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Ingredient successfully updated.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                    format: "uuid",
+                    description: "The unique ID of the pantry entry.",
+                  },
+                  userId: {
+                    type: "string",
+                    format: "uuid",
+                    description: "The ID of the user who owns this pantry entry.",
+                  },
+                  ingredientId: {
+                    type: "string",
+                    format: "uuid",
+                    description: "The ID of the ingredient being updated.",
+                  },
+                  unitQuantity: {
+                    type: "integer",
+                    description: "The updated unit quantity.",
+                  },
+                  totalAmount: {
+                    type: "number",
+                    format: "double",
+                    nullable: true,
+                    description: "The updated total amount.",
+                  },
+                  unitType: {
+                    type: "string",
+                    nullable: true,
+                    description: "The updated unit of measurement.",
+                  },
+                  expiry_date: {
+                    type: "string",
+                    format: "date-time",
+                    nullable: true,
+                    description: "The updated expiry date.",
+                  },
+                  addedAt: {
+                    type: "string",
+                    format: "date-time",
+                    description: "Timestamp when the ingredient was originally added.",
+                  },
+                },
+              },
+            },
+          },
+        },
+        400: {
+          description: "Bad request. Invalid or missing input fields.",
+        },
+        404: {
+          description: "User ingredient entry not found.",
+        },
+        500: {
+          description: "Internal server error.",
+        },
+      },
+    },
   },
+
 };
 
 export default userIngredientDocs;

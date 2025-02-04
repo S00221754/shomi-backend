@@ -31,7 +31,7 @@ export class UserIngredient extends BaseEntity {
   unitType?: string; // e.g. for liquids, Litre, weight, grams, etc.
 
   @Column({ type: "timestamp", nullable: true, default: null })
-  expiry_date?: Date;
+  expiry_date?: Date; // need to see if i can allow multiple expiry dates for the same ingredient as there can be multiple of the same ingredient with different expiry dates
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   added_at: Date;

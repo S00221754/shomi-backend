@@ -3,7 +3,7 @@ import userIngredientRepository from "../repositories/userIngredientRepository";
 import ingredientRepository from '../repositories/ingredientRepository';
 import userRepository from '../repositories/userRepository';
 import createHttpError from 'http-errors';
-import { UserIngredientInput } from "types/userIngredient";
+import { UpdateUserIngredientDTO, UserIngredientInput } from "types/userIngredient";
 
 
 export const addUserIngredient = async (userIngredient: UserIngredientInput): Promise<UserIngredient> => {
@@ -44,4 +44,45 @@ export const getUserIngredients = async (userid: string): Promise<UserIngredient
     return await userIngredientRepository.getUserIngredients(userid);
 };
 
-export default { addUserIngredient, getUserIngredients };
+export const getUserIngredientById = async (id: string): Promise<UserIngredient | null> => {
+    return await userIngredientRepository.getUserIngredientById(id);
+};
+
+export const updateUserIngredient = async (
+    id: string,
+    updatedIngredient: UpdateUserIngredientDTO
+): Promise<UserIngredient> => {
+    const userIngredient = await userIngredientRepository.getUserIngredientById(id);
+
+    if (!userIngredient) {
+        throw new createHttpError.NotFound("User ingredient not found.");
+    }
+
+    if (updatedIngredient.unitQuantity !== undefined) {
+        if (typeof updatedIngredient.unitQuantity !== "number" || updatedIngredient.unitQuantity < 0) {
+            throw new createHttpError.BadRequest("Unit quantity must be a non-negative number.");
+        }
+    }
+
+    if (updatedIngredient.totalAmount !== undefined) {
+        if (updatedIngredient.totalAmount !== null && (typeof updatedIngredient.totalAmount !== "number" || updatedIngredient.totalAmount < 0)) {
+            throw new createHttpError.BadRequest("Total amount must be a non-negative number or null.");
+        }
+    }
+
+    if (updatedIngredient.unitType !== undefined) {
+        if (typeof updatedIngredient.unitType !== "string" || updatedIngredient.unitType.length > 50) {
+            throw new createHttpError.BadRequest("Unit type must be a string with a maximum length of 50 characters.");
+        }
+    }
+
+    if (updatedIngredient.expiry_date !== undefined) {
+        if (updatedIngredient.expiry_date !== null && isNaN(new Date(updatedIngredient.expiry_date).getTime())) {
+            throw new createHttpError.BadRequest("Expiry date must be a valid date or null.");
+        }
+    }
+
+    return await userIngredientRepository.updateUserIngredient(id, updatedIngredient);
+};
+
+export default { addUserIngredient, getUserIngredients, getUserIngredientById, updateUserIngredient };

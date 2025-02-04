@@ -3,6 +3,7 @@ import AppDataSource from "../database/data-source";
 import { UserIngredient } from "../entities/UserIngredient";
 import { User } from "entities/User";
 import { Ingredient } from "entities/Ingredient";
+import { UpdateUserIngredientDTO } from "types/userIngredient";
 
 
 const userIngredientRepo: Repository<UserIngredient> = AppDataSource.getRepository(UserIngredient);
@@ -44,5 +45,25 @@ export const getUserIngredients = async (userid: string): Promise<UserIngredient
     });
 };
 
+export const getUserIngredientById = async (id: string): Promise<UserIngredient | null> => {
+    return await userIngredientRepo.findOne({
+        where: {
+            id: id,
+        }
+    });
+};
 
-export default { addUserIngredient, findUserIngredient, getUserIngredients };
+export const updateUserIngredient = async (id: string, updatedIngredient: UpdateUserIngredientDTO): Promise<UserIngredient> => {
+    const userIngredient = await getUserIngredientById(id);
+
+    if (!userIngredient) {
+        throw null;
+    }
+
+    return await userIngredientRepo.save({
+        ...userIngredient,
+        ...updatedIngredient,
+    });
+};
+
+export default { addUserIngredient, findUserIngredient, getUserIngredients, updateUserIngredient, getUserIngredientById };
