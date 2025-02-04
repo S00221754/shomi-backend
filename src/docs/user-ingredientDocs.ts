@@ -115,6 +115,7 @@ const userIngredientDocs = {
       },
     },
   },
+
   "/api/v1/user-ingredient/{id}": {
     get: {
       summary: "Get a user's pantry ingredients",
@@ -317,8 +318,35 @@ const userIngredientDocs = {
         },
       },
     },
+    delete: {
+      summary: "Delete a user's pantry ingredient",
+      tags: ["User Ingredients (Pantry)"],
+      description: "Deletes a pantry ingredient entry for a user. Returns an error if the entry does not exist.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+            format: "uuid",
+          },
+          description: "The unique ID of the user's pantry ingredient entry to be deleted.",
+        },
+      ],
+      responses: {
+        204: {
+          description: "Ingredient successfully deleted.",
+        },
+        404: {
+          description: "User ingredient entry not found.",
+        },
+        500: {
+          description: "Internal server error.",
+        },
+      },
+    },
   },
-
 };
 
 export default userIngredientDocs;

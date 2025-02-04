@@ -66,4 +66,8 @@ export const updateUserIngredient = async (id: string, updatedIngredient: Update
     });
 };
 
-export default { addUserIngredient, findUserIngredient, getUserIngredients, updateUserIngredient, getUserIngredientById };
+export const deleteUserIngredient = async (id: string): Promise<void> => {
+    await userIngredientRepo.delete(id);
+};
+
+export default { addUserIngredient, findUserIngredient, getUserIngredients, updateUserIngredient, getUserIngredientById, deleteUserIngredient };

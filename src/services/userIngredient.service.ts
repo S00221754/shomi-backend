@@ -85,4 +85,14 @@ export const updateUserIngredient = async (
     return await userIngredientRepository.updateUserIngredient(id, updatedIngredient);
 };
 
-export default { addUserIngredient, getUserIngredients, getUserIngredientById, updateUserIngredient };
+export const deleteUserIngredient = async (id: string): Promise<void> => {
+    const userIngredient = await userIngredientRepository.getUserIngredientById(id);
+
+    if (!userIngredient) {
+        throw new createHttpError.NotFound("User ingredient not found.");
+    }
+
+    await userIngredientRepository.deleteUserIngredient(id);
+};
+
+export default { addUserIngredient, getUserIngredients, getUserIngredientById, updateUserIngredient, deleteUserIngredient };
