@@ -30,7 +30,7 @@ export const addUserIngredient = async (userIngredient: UserIngredientInput): Pr
         throw new createHttpError.Conflict('User already has this ingredient');
     }
 
-    return await userIngredientRepository.addUserIngredient(user, ingredient, userIngredient.quantity, userIngredient.expiryDate);
+    return await userIngredientRepository.addUserIngredient(user, ingredient, userIngredient.unitQuantity, userIngredient.totalAmount, userIngredient.unitType, userIngredient.expiryDate);
 };
 
 export default { addUserIngredient };

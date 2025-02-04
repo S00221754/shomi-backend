@@ -1,6 +1,8 @@
 export type UserIngredientInput = {
     userId: string;
     ingredientId: string; 
-    quantity?: number;
+    unitQuantity?: number;
+    totalAmount?: number;
+    unitType?: string;
     expiryDate?: Date;
 };

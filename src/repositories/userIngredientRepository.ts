@@ -10,13 +10,17 @@ const userIngredientRepo: Repository<UserIngredient> = AppDataSource.getReposito
 export const addUserIngredient = async (
     user: User,
     ingredient: Ingredient,
-    quantity: number,
+    unitQuantity: number,
+    totalAmount: number,
+    unitType: string,
     expiryDate?: Date
 ): Promise<UserIngredient> => {
     const newUserIngredient = userIngredientRepo.create({
         user,
         ingredient,
-        quantity: quantity || 1,
+        unitQuantity: unitQuantity || 1,
+        totalAmount: totalAmount || null,
+        unitType: unitType || null,
         expiry_date: expiryDate || null,
     });
 
@@ -28,6 +32,14 @@ export const findUserIngredient = async (user: User, ingredient: Ingredient): Pr
         where: {
             user: { user_id: user.user_id },
             ingredient: { Ing_id: ingredient.Ing_id },
+        }
+    });
+};
+
+export const getUserIngredients = async (user: User): Promise<UserIngredient[]> => {
+    return await userIngredientRepo.find({
+        where: {
+            user: { user_id: user.user_id },
         }
     });
 };
