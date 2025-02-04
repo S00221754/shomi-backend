@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import { UserIngredient } from "./UserIngredient";
 
 
 @Entity("tbl_Ingredients")
@@ -20,4 +21,7 @@ export class Ingredient extends BaseEntity {
 
   @Column({ nullable: true })
   Ing_barcode: string;
+
+  @OneToMany(() => UserIngredient, (userIngredient) => userIngredient.ingredient)
+  userIngredients: UserIngredient[];
 }

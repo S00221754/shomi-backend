@@ -1,6 +1,7 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import ingredientDocs from "../docs/ingredientDocs";
 import userAccountDocs from "../docs/user-accountDocs";
+import userIngredientDocs from "../docs/user-ingredientDocs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -35,6 +36,7 @@ const options: swaggerJsdoc.Options = {
     paths: {
       ...ingredientDocs,
       ...userAccountDocs,
+      ...userIngredientDocs,
     },
     servers: [{ url: "http://localhost:3000" }],
   },

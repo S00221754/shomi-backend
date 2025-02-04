@@ -9,6 +9,7 @@ import errorHandler from './middleware/errorHandler';
 
 import userAccountRoutes from './routes/user-account.routes';
 import ingredientRoutes from './routes/ingredient.routes';
+import userIngredientRoutes from './routes/user-ingredient.routes';
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.use('/api/v1/user-account', userAccountRoutes);
 
 // ingredient routes
 app.use('/api/v1/ingredient', ingredientRoutes);
+
+// user ingredients routes
+app.use('/api/v1/user-ingredient', userIngredientRoutes);
 
 // swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

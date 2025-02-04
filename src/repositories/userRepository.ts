@@ -14,4 +14,8 @@ export const createUser = async (name: string, email: string, hashedPassword: st
     return await userRepo.save(newUser);
 };
 
-export default { findUserByEmail, createUser };
+export const findUserById = async (id: string): Promise<User | undefined> => {
+    return await userRepo.findOne({ where: { user_id: id } });
+};
+
+export default { findUserByEmail, createUser, findUserById };
