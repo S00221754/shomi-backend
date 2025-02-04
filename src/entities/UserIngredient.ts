@@ -23,10 +23,9 @@ export class UserIngredient extends BaseEntity {
   @Column({ type: "int", default: 1 })
   unitQuantity: number; // this needs to be more flexible and should be adjusted based on the ingredients units. (e.g. 1 egg)
 
-
   // figure out a better solution for this but for now this will do
   @Column({ type: "decimal", precision: 10, scale: 2, nullable: true })
-  totalAmount?: number; // e.g. for liquids, 1 Litre but just the number without the unit
+  totalAmount?: number; // e.g. for liquids, 1 Litre but just the number without the unit // user will not input this first time addition it will be calculated in the front end
 
   @Column({ type: "varchar", length: 50, nullable: true })
   unitType?: string; // e.g. for liquids, Litre, weight, grams, etc.

@@ -33,4 +33,15 @@ export const addUserIngredient = async (userIngredient: UserIngredientInput): Pr
     return await userIngredientRepository.addUserIngredient(user, ingredient, userIngredient.unitQuantity, userIngredient.totalAmount, userIngredient.unitType, userIngredient.expiryDate);
 };
 
-export default { addUserIngredient };
+export const getUserIngredients = async (userid: string): Promise<UserIngredient[]> => {
+
+    const user = await userRepository.findUserById(userid);
+
+    if (!user) {
+        throw new createHttpError.NotFound('User not found');
+    }
+
+    return await userIngredientRepository.getUserIngredients(userid);
+};
+
+export default { addUserIngredient, getUserIngredients };

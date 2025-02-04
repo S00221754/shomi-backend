@@ -36,13 +36,13 @@ export const findUserIngredient = async (user: User, ingredient: Ingredient): Pr
     });
 };
 
-export const getUserIngredients = async (user: User): Promise<UserIngredient[]> => {
+export const getUserIngredients = async (userid: string): Promise<UserIngredient[]> => {
     return await userIngredientRepo.find({
         where: {
-            user: { user_id: user.user_id },
+            user: { user_id: userid },
         }
     });
 };
 
 
-export default { addUserIngredient, findUserIngredient };
+export default { addUserIngredient, findUserIngredient, getUserIngredients };

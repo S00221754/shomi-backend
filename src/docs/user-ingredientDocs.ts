@@ -115,6 +115,92 @@ const userIngredientDocs = {
       },
     },
   },
+  "/api/v1/user-ingredient/{id}": {
+    get: {
+      summary: "Get a user's pantry ingredients",
+      tags: ["User Ingredients (Pantry)"],
+      description: "Retrieves all ingredients that a user has added to their pantry.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+            format: "uuid",
+          },
+          description: "The ID of the user whose pantry ingredients are being retrieved.",
+        },
+      ],
+      responses: {
+        200: {
+          description: "Successfully retrieved user's pantry ingredients.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "array",
+                items: {
+                  type: "object",
+                  properties: {
+                    id: {
+                      type: "string",
+                      format: "uuid",
+                      description: "The unique ID of the pantry entry.",
+                    },
+                    userId: {
+                      type: "string",
+                      format: "uuid",
+                      description: "The ID of the user who owns this pantry entry.",
+                    },
+                    ingredientId: {
+                      type: "string",
+                      format: "uuid",
+                      description: "The ID of the ingredient in the pantry.",
+                    },
+                    unitQuantity: {
+                      type: "integer",
+                      description: "The number of units (e.g., 2 packs, 3 bottles).",
+                    },
+                    totalAmount: {
+                      type: "number",
+                      format: "double",
+                      nullable: true,
+                      description: "The total weight/volume (e.g., 500g, 1.5L).",
+                    },
+                    unitType: {
+                      type: "string",
+                      nullable: true,
+                      description: "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                    },
+                    expiryDate: {
+                      type: "string",
+                      format: "date-time",
+                      nullable: true,
+                      description: "Expiry date of the ingredient if provided.",
+                    },
+                    addedAt: {
+                      type: "string",
+                      format: "date-time",
+                      description: "Timestamp when the ingredient was added.",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+        400: {
+          description: "Bad request. Possibly due to missing or invalid user ID.",
+        },
+        404: {
+          description: "User not found or user has no ingredients in their pantry.",
+        },
+        500: {
+          description: "Internal server error.",
+        },
+      },
+    },
+  },
 };
 
 export default userIngredientDocs;
