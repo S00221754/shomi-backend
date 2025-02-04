@@ -41,6 +41,19 @@ export const getUserIngredients = async (userid: string): Promise<UserIngredient
     return await userIngredientRepo.find({
         where: {
             user: { user_id: userid },
+        },
+        relations: ["ingredient"],
+        select: {
+            id: true,
+            unitQuantity: true,
+            totalAmount: true,
+            unitType: true,
+            expiry_date: true,
+            added_at: true,
+            ingredient: {
+                Ing_id: true,
+                Ing_name: true,
+            }
         }
     });
 };
