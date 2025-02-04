@@ -2,6 +2,7 @@ import swaggerJsdoc from "swagger-jsdoc";
 import ingredientDocs from "../docs/ingredientDocs";
 import userAccountDocs from "../docs/user-accountDocs";
 import userIngredientDocs from "../docs/user-ingredientDocs";
+import recipeDocs from "../docs/recipeDocs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -12,7 +13,7 @@ const options: swaggerJsdoc.Options = {
       description: "API documentation for my TypeScript Express API",
     },
     components: {
-      securitySchemes:{
+      securitySchemes: {
         BearerAuth: {
           type: "http",
           scheme: "bearer",
@@ -31,12 +32,52 @@ const options: swaggerJsdoc.Options = {
           },
           required: ["ING_Name"],
         },
+        CreateRecipeDTO: {
+          type: "object",
+          properties: {
+            recipe_name: { type: "string", description: "The name of the recipe" },
+            recipe_description: { type: "string", description: "Description of the recipe" },
+            ingredients: {
+              type: "array",
+              items: { $ref: "#/components/schemas/RecipeIngredient" },
+              description: "List of ingredients in the recipe"
+            },
+            recipe_instructions: { type: "string", description: "Cooking instructions for the recipe" },
+            cooking_time: { type: "number", description: "Estimated cooking time in minutes" },
+            author_id: { type: "string", description: "User ID or name of the author" },
+          },
+          required: ["recipe_name", "recipe_description", "recipe_instructions", "cooking_time", "author_id"],
+        },
+        UpdateRecipeDTO: {
+          type: "object",
+          properties: {
+            recipe_name: { type: "string", description: "The name of the recipe" },
+            ingredients: {
+              type: "array",
+              items: { $ref: "#/components/schemas/RecipeIngredient" },
+              description: "List of ingredients in the recipe"
+            },
+            recipe_description: { type: "string", description: "Description of the recipe" },
+            recipe_instructions: { type: "string", description: "Cooking instructions for the recipe" },
+            cooking_time: { type: "number", description: "Estimated cooking time in minutes" },
+          },
+        },
+        RecipeIngredient: {
+          type: "object",
+          properties: {
+            ingredient_id: { type: "string", description: "ID of the ingredient" },
+            ingredient_name: { type: "string", description: "name of the ingredient" },
+            quantity: { type: "number", description: "Quantity of the ingredient" },
+            unit: { type: "string", description: "Unit of measurement for the ingredient" },
+          },
+        }
       },
     },
     paths: {
       ...ingredientDocs,
       ...userAccountDocs,
       ...userIngredientDocs,
+      ...recipeDocs,
     },
     servers: [{ url: "http://localhost:3000" }],
   },

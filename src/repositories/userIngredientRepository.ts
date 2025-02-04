@@ -53,17 +53,8 @@ export const getUserIngredientById = async (id: string): Promise<UserIngredient 
     });
 };
 
-export const updateUserIngredient = async (id: string, updatedIngredient: UpdateUserIngredientDTO): Promise<UserIngredient> => {
-    const userIngredient = await getUserIngredientById(id);
-
-    if (!userIngredient) {
-        throw null;
-    }
-
-    return await userIngredientRepo.save({
-        ...userIngredient,
-        ...updatedIngredient,
-    });
+export const updateUserIngredient = async (userIngredient : UserIngredient): Promise<UserIngredient> => {
+    return await userIngredientRepo.save(userIngredient);
 };
 
 export const deleteUserIngredient = async (id: string): Promise<void> => {
