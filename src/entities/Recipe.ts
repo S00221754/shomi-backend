@@ -2,6 +2,8 @@ import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColu
 import { User } from "./User";
 import { RecipeIngredient } from "../types/recipeIngredient"; // Import the type
 
+// potential ideas: add a field for the image of the recipe, add a field for the category of the recipe, add a field for the tags of the recipe
+
 @Entity("tbl_Recipes")
 export class Recipe extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")

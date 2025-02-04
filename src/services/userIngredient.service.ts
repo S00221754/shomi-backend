@@ -7,9 +7,6 @@ import { UpdateUserIngredientDTO, UserIngredientInput } from "types/userIngredie
 
 
 export const addUserIngredient = async (userIngredient: UserIngredientInput): Promise<UserIngredient> => {
-
-    console.log(userIngredient);
-    
     const user = await userRepository.findUserById(userIngredient.userId);
 
     if (!user) {
@@ -82,7 +79,9 @@ export const updateUserIngredient = async (
         }
     }
 
-    return await userIngredientRepository.updateUserIngredient(id, updatedIngredient);
+    Object.assign(userIngredient, updatedIngredient);
+
+    return await userIngredientRepository.updateUserIngredient(userIngredient);
 };
 
 export const deleteUserIngredient = async (id: string): Promise<void> => {
