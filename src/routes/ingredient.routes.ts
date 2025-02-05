@@ -14,4 +14,6 @@ router.put("/:id", ingredientController.editIngredient);
 
 router.delete("/:id", ingredientController.deleteIngredient);
 
+router.get("/barcode/:barcode", ingredientController.getIngredientByBarcode);
+
 export default router;

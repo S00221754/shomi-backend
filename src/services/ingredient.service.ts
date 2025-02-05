@@ -73,4 +73,15 @@ const deleteIngredient = async (id: string) => {
     return result;
 };
 
-export default { createIngredient, getIngredients, getIngredientById, editIngredient, deleteIngredient };
+// there needs to be additional checks as the barcode is not unique for need to add barcode type to help uniquely identify the ingredient but for demo purposes this will do.
+const getIngredientByBarcode = async (barcode: string) => {
+    const result = await ingredientRepository.findIngredientByBarcode(barcode);
+
+    if(!result){
+      throw new createHttpError.NotFound();
+    }
+
+    return result;
+};
+
+export default { createIngredient, getIngredients, getIngredientById, editIngredient, deleteIngredient, getIngredientByBarcode };

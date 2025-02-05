@@ -37,3 +37,9 @@ export const deleteIngredient = asyncHandler(async (req: Request, res: Response)
   const result = await ingredientService.deleteIngredient(id);
   res.json(result);
 });
+
+export const getIngredientByBarcode = asyncHandler(async (req: Request, res: Response) => {
+  const { barcode } = req.params;
+  const result = await ingredientService.getIngredientByBarcode(barcode);
+  res.json(result);
+});

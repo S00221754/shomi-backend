@@ -24,7 +24,7 @@ export const addUserIngredient = async (
         unitType: unitType || null,
         expiry_date: expiryDate || null,
     });
-
+    
     return await userIngredientRepo.save(newUserIngredient);
 };
 

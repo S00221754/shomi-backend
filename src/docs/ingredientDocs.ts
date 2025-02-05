@@ -41,6 +41,44 @@ const ingredientDocs = {
             },
         },
     },
+
+    "/api/v1/ingredient/barcode/{barcode}": {
+        get: {
+            summary: "Get an ingredient by barcdoe",
+            tags: ["Ingredient"],
+            parameters: [
+                {
+                    name: "barcode",
+                    in: "path",
+                    required: true,
+                    description: "The barcode of the ingredient to retrieve",
+                    schema: {
+                        type: "string",
+                    },
+                },
+            ],
+            responses: {
+                200: {
+                    description: "Ingredient found",
+                    content: {
+                        "application/json": {
+                            schema: {
+                                $ref: "#/components/schemas/IngredientInput",
+                            },
+                        },
+                    },
+                },
+                404: {
+                    description: "Ingredient not found",
+                },
+                500: {
+                    description: "Server error",
+                },
+            },
+        },
+    },
+
+
     "/api/v1/ingredient/{id}": {
         get: {
             summary: "Get an ingredient by ID",
