@@ -30,33 +30,43 @@ export const deleteRecipe = async (id: string): Promise<void> => {
     await RecipeRepo.delete({ recipe_id: id });
 };
 
-export const getRecommendedRecipes = async (userId: string): Promise<Recipe[]> => {
+export const getRecommendedRecipes = async (userId: string, ingredientsIdsArray: string[]): Promise<Recipe[]> => {
     return await RecipeRepo.createQueryBuilder("recipe")
-        .innerJoin(`tbl_UserIngredients`, "ui", `"ui"."user_id" = :userId`, { userId })// Fix quotes
-        .where(`
-            EXISTS (
-                SELECT 1 FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
-                WHERE recipe_ing->>'ingredient_id'::text IN (
-                    SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
-                )
-            )
-        `)
-        .addSelect(`
-            (
-                SELECT COUNT(*) 
-                FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
-                WHERE recipe_ing->>'ingredient_id'::text IN (
-                    SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
-                )
-            )`, "match_count"
+        .innerJoin("tbl_UserIngredients", "ui", `"ui"."user_id" = :userId`, { userId })
+        .where(
+            ingredientsIdsArray.length > 0
+                ? `EXISTS (
+                    SELECT 1 FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+                    WHERE recipe_ing->>'ingredient_id'::text IN (:...ingredientsIdsArray)
+                )`
+                : `EXISTS (
+                    SELECT 1 FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+                    WHERE recipe_ing->>'ingredient_id' IN (
+                        SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+                    )
+                )`
         )
-        .orderBy("match_count", "DESC")
+        .addSelect(
+            ingredientsIdsArray.length > 0
+                ? `(
+                    SELECT COUNT(*) 
+                    FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+                    WHERE recipe_ing->>'ingredient_id'::text IN (:...ingredientsIdsArray)
+                )`
+                : "0",
+            "selected_match_count"
+        )
+        .addSelect(`(
+            SELECT COUNT(*) 
+            FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+            WHERE recipe_ing->>'ingredient_id'::text IN (
+                SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+            )
+        )`, "pantry_match_count")
+        .orderBy(ingredientsIdsArray.length > 0 ? "selected_match_count" : "pantry_match_count", "DESC")
+        .setParameter("ingredientsIdsArray", ingredientsIdsArray.length > 0 ? ingredientsIdsArray : ["dummy_value"])
         .getMany();
 };
-
-
-
-
 
 // below are possible endpoints to make
 // GET /recipes?=search - search for recipes
