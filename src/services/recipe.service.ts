@@ -126,5 +126,15 @@ export const deleteRecipe = async (id: string): Promise<void> => {
     await recipeRepository.deleteRecipe(id);
 };
 
-export default { addRecipe, getRecipes, findRecipeById, updateRecipe, deleteRecipe };
+export const getRecommendedRecipes = async (userId: string): Promise<Recipe[]> => {
+    const user = await userRepository.findUserById(userId);
+
+    if(!user){
+        throw new createHttpError.NotFound("User not found.");
+    }
+
+    return await recipeRepository.getRecommendedRecipes(userId);
+};
+
+export default { addRecipe, getRecipes, findRecipeById, updateRecipe, deleteRecipe, getRecommendedRecipes };
 

@@ -30,11 +30,39 @@ export const deleteRecipe = async (id: string): Promise<void> => {
     await RecipeRepo.delete({ recipe_id: id });
 };
 
+export const getRecommendedRecipes = async (userId: string): Promise<Recipe[]> => {
+    return await RecipeRepo.createQueryBuilder("recipe")
+        .innerJoin(`tbl_UserIngredients`, "ui", `"ui"."user_id" = :userId`, { userId })// Fix quotes
+        .where(`
+            EXISTS (
+                SELECT 1 FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+                WHERE recipe_ing->>'ingredient_id'::text IN (
+                    SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+                )
+            )
+        `)
+        .addSelect(`
+            (
+                SELECT COUNT(*) 
+                FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
+                WHERE recipe_ing->>'ingredient_id'::text IN (
+                    SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+                )
+            )`, "match_count"
+        )
+        .orderBy("match_count", "DESC")
+        .getMany();
+};
+
+
+
+
+
 // below are possible endpoints to make
 // GET /recipes?=search - search for recipes
 // GET /recipes?=filter - filter recipes
 // GET /recipes?=sort - sort recipes
 
-export default { addRecipe, findRecipeById, getRecipes, updateRecipe, deleteRecipe };
+export default { addRecipe, findRecipeById, getRecipes, updateRecipe, deleteRecipe, getRecommendedRecipes };
 
 

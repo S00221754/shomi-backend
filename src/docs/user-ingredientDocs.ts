@@ -128,7 +128,6 @@ const userIngredientDocs = {
           required: true,
           schema: {
             type: "string",
-            format: "uuid",
           },
           description: "The ID of the user whose pantry ingredients are being retrieved.",
         },

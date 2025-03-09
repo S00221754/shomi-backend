@@ -130,6 +130,36 @@ const recipeDocs = {
             },
         },
     },
+    "/api/v1/recipes/recommended/{userId}": {
+        get: {
+            summary: "Get recommended recipes for a user",
+            tags: ["Recipe"],
+            parameters: [
+                {
+                    name: "userId",
+                    in: "path",
+                    required: true,
+                    schema: {
+                        type: "string",
+                    },
+                },
+            ],
+            responses: {
+                200: {
+                    description: "List of recommended recipes based on user's ingredients",
+                },
+                400: {
+                    description: "Bad Request",
+                },
+                404: {
+                    description: "User not found or no recommendations available",
+                },
+                500: {
+                    description: "Server error",
+                },
+            },
+        },
+    },
 };
 
 export default recipeDocs;
