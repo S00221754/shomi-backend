@@ -8,7 +8,6 @@ import { UpdateUserIngredientDTO, UserIngredientInput } from "types/userIngredie
 
 export const addUserIngredient = async (userIngredient: UserIngredientInput): Promise<UserIngredient> => {
     const user = await userRepository.findUserById(userIngredient.userId);
-
     if (!user) {
         throw new createHttpError.NotFound('User not found');
     }

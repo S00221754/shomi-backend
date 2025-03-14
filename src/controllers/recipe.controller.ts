@@ -34,4 +34,18 @@ export const deleteRecipe = asyncHandler(async (req: Request<{ id: string }>, re
     res.status(204).end();
 });
 
+export const getRecommendedRecipes = asyncHandler(async (
+    req: Request<{ userId: string }, {}, { selectedIngredients?: string[] }>,
+    res: Response<Recipe[]>
+) => {
+    const { userId } = req.params;
+    let { selectedIngredients } = req.body;
+
+    if (!Array.isArray(selectedIngredients) || selectedIngredients.length === 0 || selectedIngredients.includes("")) {
+        selectedIngredients = [];
+    }
+
+    const result = await recipeService.getRecommendedRecipes(userId, selectedIngredients);
+    res.json(result);
+});
 

@@ -15,4 +15,6 @@ router.patch('/:id', recipeController.updateRecipe);
 
 router.delete('/:id', recipeController.deleteRecipe);
 
+router.post('/recommended/:userId', recipeController.getRecommendedRecipes);
+
 export default router;
