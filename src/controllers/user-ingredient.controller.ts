@@ -23,7 +23,7 @@ export const getUserIngredientById = asyncHandler(async (req: Request, res: Resp
 
 export const updateUserIngredient = asyncHandler(async (req: Request, res: Response) => {
     const id = req.params.id;
-    const updatedIngredient: UpdateUserIngredientDTO = req.body;
+    const updatedIngredient: UpdateUserIngredientDTO = req.body.userIngredient;
 
     const result = await userIngredientService.updateUserIngredient(id, updatedIngredient);
     res.status(200).json(result);
