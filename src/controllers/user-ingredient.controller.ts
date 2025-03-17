@@ -4,7 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 import { UpdateUserIngredientDTO, UserIngredientInput } from "types/userIngredient";
 
 export const createUserIngredient = asyncHandler(async (req: Request, res: Response) => {
-    const userIngredientInput: UserIngredientInput = req.body; //need to fix frontend for sending an object and not flat data.
+    const userIngredientInput: UserIngredientInput = req.body.userIngredient; //need to fix frontend for sending an object and not flat data.
     const result = await userIngredientService.addUserIngredient(userIngredientInput);
     res.status(201).json({ id: result.id });
 });
