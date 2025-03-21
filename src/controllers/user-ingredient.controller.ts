@@ -34,3 +34,10 @@ export const deleteUserIngredient = asyncHandler(async (req: Request, res: Respo
     await userIngredientService.deleteUserIngredient(id);
     res.status(204).send();
 });
+
+export const getUserIngredientByIngredientId = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.params.userId;
+    const ingredientId = req.params.ingredientId;
+    const result = await userIngredientService.getUserIngredientByIngredientId(userId, ingredientId);
+    res.status(200).json(result);
+});
