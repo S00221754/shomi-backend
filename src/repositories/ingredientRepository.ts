@@ -54,4 +54,14 @@ export const ingredientExists = async (name: string, brand?: string, barcode?: s
     return count > 0;
 };
 
-export default { getIngredients, getIngredientById, editIngredient, addIngredient, deleteIngredient, findIngredientByName, findIngredientByBarcode, ingredientExists };
+export const getDistinctUnitTypes = async (): Promise<string[]> => {
+    const result = await ingredientRepo
+        .createQueryBuilder("ingredient")
+        .select("ingredient.Ing_quantity_units", "unitType")
+        .distinct(true)
+        .getRawMany();
+
+    return result.map((item) => item.unitType);
+};
+
+export default { getIngredients, getIngredientById, editIngredient, addIngredient, deleteIngredient, findIngredientByName, findIngredientByBarcode, ingredientExists, getDistinctUnitTypes };

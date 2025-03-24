@@ -57,7 +57,6 @@ const editIngredient = async (id: string, editedIngredient: IngredientInput) => 
 
 // delete an ingredient
 const deleteIngredient = async (id: string) => {
-
     const existingIngredient = await ingredientRepository.getIngredientById(id);
 
     if(!existingIngredient){
@@ -78,7 +77,8 @@ const getIngredientByBarcode = async (barcode: string) => {
     const result = await ingredientRepository.findIngredientByBarcode(barcode);
 
     if(!result){
-      throw new createHttpError.NotFound();
+      console.log(`Ingredient with barcode ${barcode} not found in database.`);
+      return null;
     }
 
     return result;

@@ -16,8 +16,11 @@ export class Ingredient extends BaseEntity {
   @Column("text", { array: true, nullable: true })
   Ing_keywords: string[];
 
-  @Column("text", { array: true, nullable: true })
-  Ing_units: string[];
+  @Column({ nullable: true })
+  Ing_quantity: number;
+
+  @Column("text", { nullable: true })
+  Ing_quantity_units: string;
 
   @Column({ nullable: true })
   Ing_barcode: string;
