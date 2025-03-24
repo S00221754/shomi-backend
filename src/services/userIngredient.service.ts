@@ -20,8 +20,6 @@ export const addUserIngredient = async (userIngredient: UserIngredientInput): Pr
 
     const existingUserIngredient = await userIngredientRepository.findUserIngredient(user.user_id, ingredient.Ing_id);
 
-    console.log(existingUserIngredient);
-    
     if (existingUserIngredient) {
         throw new createHttpError.Conflict('User already has this ingredient');
     }
@@ -87,14 +85,23 @@ export const updateUserIngredient = async (
     return await userIngredientRepository.updateUserIngredient(userIngredient);
 };
 
-export const deleteUserIngredient = async (id: string): Promise<void> => {
-    const userIngredient = await userIngredientRepository.getUserIngredientById(id);
+export const deleteUserIngredient = async (ids: string[]): Promise<void> => {
 
-    if (!userIngredient) {
-        throw new createHttpError.NotFound("User ingredient not found.");
+    console.log("service", ids);
+    
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+        throw new createHttpError.BadRequest("No user ingredient IDs provided.");
     }
 
-    await userIngredientRepository.deleteUserIngredient(id);
+    for (const id of ids) {
+        const userIngredient = await userIngredientRepository.getUserIngredientById(id);
+        if (!userIngredient) {
+            throw new createHttpError.NotFound(`User ingredient not found for ID: ${id}`);
+        }
+    }
+
+    await userIngredientRepository.deleteUserIngredient(ids);
 };
 
 export default { addUserIngredient, getUserIngredients, getUserIngredientById, updateUserIngredient, deleteUserIngredient, getUserIngredientByIngredientId };

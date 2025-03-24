@@ -29,9 +29,9 @@ export const updateUserIngredient = asyncHandler(async (req: Request, res: Respo
     res.status(200).json(result);
 });
 
-export const deleteUserIngredient = asyncHandler(async (req: Request, res: Response) => {
-    const id = req.params.id;
-    await userIngredientService.deleteUserIngredient(id);
+export const deleteUserIngredient = asyncHandler(async (req: Request, res: Response) => {   
+    const ids: string[] = req.body.userIngredientIds;
+    await userIngredientService.deleteUserIngredient(ids);
     res.status(204).send();
 });
 

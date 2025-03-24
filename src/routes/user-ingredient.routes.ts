@@ -9,7 +9,7 @@ router.get('/:id', getUserIngredients);
 
 router.patch('/:id', updateUserIngredient);
 
-router.delete('/:id', deleteUserIngredient);
+router.delete('/', deleteUserIngredient);
 
 router.get('/:userId/:ingredientId', getUserIngredientByIngredientId);
 
