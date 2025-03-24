@@ -11,6 +11,7 @@ import userAccountRoutes from './routes/user-account.routes';
 import ingredientRoutes from './routes/ingredient.routes';
 import userIngredientRoutes from './routes/user-ingredient.routes';
 import recipeRoutes from './routes/recipes.routes';
+import unitTypeRoutes from './routes/unit-types.routes';
 
 const app = express();
 
@@ -34,6 +35,9 @@ app.use('/api/v1/user-ingredient', userIngredientRoutes);
 
 // recipe routes
 app.use('/api/v1/recipes', recipeRoutes);
+
+// unit types routes
+app.use('/api/v1/unit-types', unitTypeRoutes);
 
 // swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
