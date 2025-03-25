@@ -1,13 +1,13 @@
 import { Repository } from "typeorm";
 import AppDataSource from "../database/data-source";
 import { UserIngredient } from "../entities/UserIngredient";
-import { User } from "entities/User";
 import { Ingredient } from "entities/Ingredient";
+import { Profile } from "entities/Profile";
 
 const userIngredientRepo: Repository<UserIngredient> = AppDataSource.getRepository(UserIngredient);
 
 export const addUserIngredient = async (
-    user: User,
+    userId: string,
     ingredient: Ingredient,
     unitQuantity: number,
     totalAmount: number,
@@ -15,7 +15,7 @@ export const addUserIngredient = async (
     expiryDate?: Date
 ): Promise<UserIngredient> => {
     const newUserIngredient = userIngredientRepo.create({
-        user,
+        user: { id: userId } as Profile,
         ingredient,
         unitQuantity: unitQuantity || 1,
         totalAmount: totalAmount || null,
@@ -29,7 +29,7 @@ export const addUserIngredient = async (
 export const findUserIngredient = async (userId: string, ingredientId: string): Promise<UserIngredient | null> => {
     return await userIngredientRepo.findOne({
         where: {
-            user: { user_id: userId },
+            user: { id: userId },
             ingredient: { Ing_id: ingredientId },
         },
         relations: ["ingredient"], // this includes the ingredient data in the result
@@ -39,7 +39,7 @@ export const findUserIngredient = async (userId: string, ingredientId: string): 
 export const getUserIngredients = async (userid: string): Promise<UserIngredient[]> => {
     return await userIngredientRepo.find({
         where: {
-            user: { user_id: userid },
+            user: { id: userid },
         },
         relations: ["ingredient"],
         select: {

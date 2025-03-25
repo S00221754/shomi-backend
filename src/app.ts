@@ -7,7 +7,7 @@ import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import errorHandler from './middleware/errorHandler';
 
-import userAccountRoutes from './routes/user-account.routes';
+import profileRoutes from './routes/proflie.routes';
 import ingredientRoutes from './routes/ingredient.routes';
 import userIngredientRoutes from './routes/user-ingredient.routes';
 import recipeRoutes from './routes/recipes.routes';
@@ -24,8 +24,8 @@ app.use(express.json());
 
 /*************routes *************/
 
-// user account routes
-app.use('/api/v1/user-account', userAccountRoutes);
+//profile routes
+app.use('/api/v1/profile', profileRoutes);
 
 // ingredient routes
 app.use('/api/v1/ingredient', ingredientRoutes);

@@ -1,13 +1,13 @@
 import { UserIngredient } from "../entities/UserIngredient";
 import userIngredientRepository from "../repositories/userIngredientRepository";
 import ingredientRepository from '../repositories/ingredientRepository';
-import userRepository from '../repositories/userRepository';
+import profileRepository from "../repositories/profileRepository";
 import createHttpError from 'http-errors';
 import { UpdateUserIngredientDTO, UserIngredientInput } from "types/userIngredient";
 
 
 export const addUserIngredient = async (userIngredient: UserIngredientInput): Promise<UserIngredient> => {
-    const user = await userRepository.findUserById(userIngredient.userId);
+    const user = await profileRepository.findProfileById(userIngredient.userId);
     if (!user) {
         throw new createHttpError.NotFound('User not found');
     }
@@ -18,18 +18,18 @@ export const addUserIngredient = async (userIngredient: UserIngredientInput): Pr
         throw new createHttpError.NotFound('Ingredient not found');
     }
 
-    const existingUserIngredient = await userIngredientRepository.findUserIngredient(user.user_id, ingredient.Ing_id);
+    const existingUserIngredient = await userIngredientRepository.findUserIngredient(user.id, ingredient.Ing_id);
 
     if (existingUserIngredient) {
         throw new createHttpError.Conflict('User already has this ingredient');
     }
 
-    return await userIngredientRepository.addUserIngredient(user, ingredient, userIngredient.unitQuantity, userIngredient.totalAmount, userIngredient.unitType, userIngredient.expiryDate);
+    return await userIngredientRepository.addUserIngredient(user.id, ingredient, userIngredient.unitQuantity, userIngredient.totalAmount, userIngredient.unitType, userIngredient.expiryDate);
 };
 
 export const getUserIngredients = async (userid: string): Promise<UserIngredient[]> => {
 
-    const user = await userRepository.findUserById(userid);
+    const user = await profileRepository.findProfileById(userid);
 
     if (!user) {
         throw new createHttpError.NotFound('User not found');

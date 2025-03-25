@@ -1,9 +1,9 @@
 import swaggerJsdoc from "swagger-jsdoc";
 import ingredientDocs from "../docs/ingredientDocs";
-import userAccountDocs from "../docs/user-accountDocs";
 import userIngredientDocs from "../docs/user-ingredientDocs";
 import recipeDocs from "../docs/recipeDocs";
 import unitTypeDocs from "../docs/unitTypeDocs";
+import profileDocs from "../docs/profileDocs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -76,7 +76,7 @@ const options: swaggerJsdoc.Options = {
     },
     paths: {
       ...ingredientDocs,
-      ...userAccountDocs,
+      ...profileDocs,
       ...userIngredientDocs,
       ...recipeDocs,
       ...unitTypeDocs,
