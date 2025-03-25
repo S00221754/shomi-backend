@@ -7,7 +7,7 @@ import {
     Unique,
   } from "typeorm";
   
-  @Entity("tblref_UnitTypes")
+  @Entity("unit_types")
   @Unique(["name"])
   export class UnitType {
     @PrimaryGeneratedColumn("uuid")

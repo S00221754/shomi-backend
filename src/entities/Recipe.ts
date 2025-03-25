@@ -1,10 +1,10 @@
 import { Entity, BaseEntity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, CreateDateColumn } from "typeorm";
-import { User } from "./User";
 import { RecipeIngredient } from "../types/recipeIngredient"; // Import the type
+import { Profile } from "./Profile";
 
 // potential ideas: add a field for the image of the recipe, add a field for the category of the recipe, add a field for the tags of the recipe
 
-@Entity("tbl_Recipes")
+@Entity("recipes")
 export class Recipe extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     recipe_id: string;
@@ -25,9 +25,10 @@ export class Recipe extends BaseEntity {
     @Column({ type: "int", nullable: false })
     cooking_time: number;
 
-    @ManyToOne(() => User, (user) => user.recipes, { onDelete: "CASCADE" })
+    @ManyToOne(() => Profile, { onDelete: "CASCADE" })
     @JoinColumn({ name: "author_id" })
-    author: User;
+    author: Profile;
+    
 
     @CreateDateColumn({ type: "timestamp" })
     created_at: Date;

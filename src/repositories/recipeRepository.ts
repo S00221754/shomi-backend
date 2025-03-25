@@ -32,7 +32,7 @@ export const deleteRecipe = async (id: string): Promise<void> => {
 
 export const getRecommendedRecipes = async (userId: string, ingredientsIdsArray: string[]): Promise<Recipe[]> => {
     return await RecipeRepo.createQueryBuilder("recipe")
-        .innerJoin("tbl_UserIngredients", "ui", `"ui"."user_id" = :userId`, { userId })
+        .innerJoin("user_ingredients", "ui", `"ui"."user_id" = :userId`, { userId })
         .where(
             ingredientsIdsArray.length > 0
                 ? `EXISTS (
@@ -42,7 +42,7 @@ export const getRecommendedRecipes = async (userId: string, ingredientsIdsArray:
                 : `EXISTS (
                     SELECT 1 FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
                     WHERE recipe_ing->>'ingredient_id' IN (
-                        SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+                        SELECT ingredient_id::text FROM "user_ingredients" WHERE user_id = :userId
                     )
                 )`
         )
@@ -60,7 +60,7 @@ export const getRecommendedRecipes = async (userId: string, ingredientsIdsArray:
             SELECT COUNT(*) 
             FROM jsonb_array_elements(recipe.ingredients) AS recipe_ing
             WHERE recipe_ing->>'ingredient_id'::text IN (
-                SELECT ingredient_id::text FROM "tbl_UserIngredients" WHERE user_id = :userId
+                SELECT ingredient_id::text FROM "user_ingredients" WHERE user_id = :userId
             )
         )`, "pantry_match_count")
         .orderBy(ingredientsIdsArray.length > 0 ? "selected_match_count" : "pantry_match_count", "DESC")

@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "t
 import { UserIngredient } from "./UserIngredient";
 
 
-@Entity("tbl_Ingredients")
+@Entity("ingredients")
 export class Ingredient extends BaseEntity {
   @PrimaryGeneratedColumn("increment")
   Ing_id: string;

@@ -1,9 +1,9 @@
-import userRepository from "../repositories/userRepository";
 import createHttpError from "http-errors";
 import { Recipe } from "entities/Recipe";
 import recipeRepository from "../repositories/recipeRepository";
 import { CreateRecipeDTO, UpdateRecipeDTO } from "types/recipe";
 import ingredientRepository from "../repositories/ingredientRepository";
+import profileRepository from "../repositories/profileRepository";
 
 const requiredFields: { key: keyof CreateRecipeDTO; label: string }[] = [
     { key: "recipe_name", label: "Recipe Name" },
@@ -42,7 +42,7 @@ export const addRecipe = async (recipe: CreateRecipeDTO): Promise<Recipe> => {
         }
     }
 
-    const user = await userRepository.findUserById(recipe.author_id);
+    const user = await profileRepository.findProfileById(recipe.author_id);
 
     if(!user){
         throw new createHttpError.NotFound("User not found.");
@@ -127,7 +127,7 @@ export const deleteRecipe = async (id: string): Promise<void> => {
 };
 
 export const getRecommendedRecipes = async (userId: string, ingredientsIdsArray: string[] = []): Promise<Recipe[]> => {
-    const user = await userRepository.findUserById(userId);
+    const user = await profileRepository.findProfileById(userId);
 
     if (!user) {
         throw new createHttpError.NotFound("User not found.");
