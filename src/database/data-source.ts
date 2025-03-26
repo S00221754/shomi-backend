@@ -12,18 +12,20 @@ const DB_PORT = Number(process.env.DB_PORT ?? "5432");
 
 const AppDataSource = new DataSource({
   type: "postgres",
-  host: DB_HOST,
-  port: DB_PORT,
-  username: DB_USER,
-  password: DB_PASS,
-  database: DB_NAME,
-  synchronize: false, // never true in production
+  host: process.env.DB_HOST,
+  port: Number(process.env.DB_PORT),
+  username: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+    family: 4,
+  },
+  synchronize: false,
   logging: true,
-  entities: ["src/entities/*.ts"],
-  migrations: ["src/database/migrations/*.ts"],
-  extra:{
-    family: 4
-  }
+  entities: [process.env.NODE_ENV === "production" ? "dist/entities/*.js" : "src/entities/*.ts"],
+  migrations: [process.env.NODE_ENV === "production" ? "dist/database/migrations/*.js" : "src/database/migrations/*.ts"],
 });
-
 export default AppDataSource;
