@@ -1,55 +1,45 @@
 import { Request, Response } from "express";
 import asyncHandler from "../utils/asyncHandler";
-import bookmarkedRecipeService from "../services/bookmarkRecipes.service";
-import { BookmarkedRecipe } from "entities/BookmarkedRecipes";
+import bookmarkRecipesService from "../services/bookmarkRecipes.service";
 
 // Bookmark a recipe
-export const bookmarkRecipe = asyncHandler(
-  async (
-    req: Request<{}, {}, { user_id: string; recipe_id: string }>,
-    res: Response<BookmarkedRecipe>
-  ) => {
-    const { user_id, recipe_id } = req.body;
-    const result = await bookmarkedRecipeService.bookmarkRecipe(
-      user_id,
-      recipe_id
+export const createBookmark = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { userId, recipeId } = req.body.data;
+    const result = await bookmarkRecipesService.bookmarkRecipe(
+      userId,
+      recipeId
     );
-    res.status(201).json(result);
-  }
-);
-
-// Unbookmark a recipe
-export const unbookmarkRecipe = asyncHandler(
-  async (
-    req: Request<{}, {}, { user_id: string; recipe_id: string }>,
-    res: Response<void>
-  ) => {
-    const { user_id, recipe_id } = req.body;
-    await bookmarkedRecipeService.unbookmarkRecipe(user_id, recipe_id);
-    res.status(204).end();
-  }
-);
-
-// Get all bookmarked recipes for a user
-export const getBookmarksByUser = asyncHandler(
-  async (
-    req: Request<{ userId: string }>,
-    res: Response<BookmarkedRecipe[]>
-  ) => {
-    const { userId } = req.params;
-    const result = await bookmarkedRecipeService.getBookmarksByUser(userId);
     res.json(result);
   }
 );
 
-// Check if a specific recipe is bookmarked
-export const checkIfBookmarked = asyncHandler(
-  async (
-    req: Request<{ userId: string; recipeId: string }>,
-    res: Response<{ bookmarked: boolean }>
-  ) => {
+// Unbookmark a recipe
+export const deleteBookmark = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { userId, recipeId } = req.body;
+    const result = await bookmarkRecipesService.unbookmarkRecipe(
+      userId,
+      recipeId
+    );
+    res.json(result);
+  }
+);
+
+// Get all bookmarked recipes for a user
+export const getBookmarkedRecipesByUser = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { userId } = req.params;
+    const result = await bookmarkRecipesService.getBookmarksByUser(userId);
+    res.json(result);
+  }
+);
+
+// Check if a recipe is bookmarked by a user
+export const isRecipeBookmarked = asyncHandler(
+  async (req: Request, res: Response) => {
     const { userId, recipeId } = req.params;
-    const bookmarked = await bookmarkedRecipeService.isBookmarked(
+    const bookmarked = await bookmarkRecipesService.isBookmarked(
       userId,
       recipeId
     );
