@@ -17,4 +17,5 @@ export class UpdateRecipeDTO {
   ingredients?: RecipeIngredient[];
   cooking_time?: number;
   recipe_images?: string[];
+  author_id?: string;
 }
