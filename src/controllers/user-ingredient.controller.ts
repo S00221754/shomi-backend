@@ -29,6 +29,12 @@ export const updateUserIngredient = asyncHandler(async (req: Request, res: Respo
     res.status(200).json(result);
 });
 
+export const quickRestockUserIngredient = asyncHandler(async (req: Request, res: Response) => {
+    const userIngredientId = req.params.id;
+    const result = await userIngredientService.quickRestockUserIngredient(userIngredientId);
+    res.status(200).json(result);
+});
+
 export const deleteUserIngredient = asyncHandler(async (req: Request, res: Response) => {
     console.log(req);
     

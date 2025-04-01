@@ -3,7 +3,8 @@ const userIngredientDocs = {
     post: {
       summary: "Add an ingredient to a user's pantry",
       tags: ["User Ingredients (Pantry)"],
-      description: "Adds an ingredient to a user's pantry after verifying the user and ingredient exist.",
+      description:
+        "Adds an ingredient to a user's pantry after verifying the user and ingredient exist.",
       requestBody: {
         required: true,
         content: {
@@ -20,12 +21,14 @@ const userIngredientDocs = {
                 ingredientId: {
                   type: "string",
                   format: "uuid",
-                  description: "The ID of the ingredient being added to the pantry.",
+                  description:
+                    "The ID of the ingredient being added to the pantry.",
                 },
                 unitQuantity: {
                   type: "integer",
                   minimum: 1,
-                  description: "The number of units (e.g., 2 packs, 3 bottles).",
+                  description:
+                    "The number of units (e.g., 2 packs, 3 bottles).",
                 },
                 totalAmount: {
                   type: "number",
@@ -36,13 +39,15 @@ const userIngredientDocs = {
                 unitType: {
                   type: "string",
                   nullable: true,
-                  description: "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                  description:
+                    "The unit of measurement (e.g., g, kg, ml, L, cups).",
                 },
                 expiryDate: {
                   type: "string",
                   format: "date-time",
                   nullable: true,
-                  description: "Optional expiry date of the ingredient in the pantry.",
+                  description:
+                    "Optional expiry date of the ingredient in the pantry.",
                 },
               },
             },
@@ -65,7 +70,8 @@ const userIngredientDocs = {
                   userId: {
                     type: "string",
                     format: "uuid",
-                    description: "The ID of the user who owns this pantry entry.",
+                    description:
+                      "The ID of the user who owns this pantry entry.",
                   },
                   ingredientId: {
                     type: "string",
@@ -74,7 +80,8 @@ const userIngredientDocs = {
                   },
                   unitQuantity: {
                     type: "integer",
-                    description: "The number of units (e.g., 2 packs, 3 bottles).",
+                    description:
+                      "The number of units (e.g., 2 packs, 3 bottles).",
                   },
                   totalAmount: {
                     type: "number",
@@ -85,7 +92,8 @@ const userIngredientDocs = {
                   unitType: {
                     type: "string",
                     nullable: true,
-                    description: "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                    description:
+                      "The unit of measurement (e.g., g, kg, ml, L, cups).",
                   },
                   expiryDate: {
                     type: "string",
@@ -120,7 +128,8 @@ const userIngredientDocs = {
     get: {
       summary: "Get a user's pantry ingredients",
       tags: ["User Ingredients (Pantry)"],
-      description: "Retrieves all ingredients that a user has added to their pantry.",
+      description:
+        "Retrieves all ingredients that a user has added to their pantry.",
       parameters: [
         {
           name: "id",
@@ -129,7 +138,8 @@ const userIngredientDocs = {
           schema: {
             type: "string",
           },
-          description: "The ID of the user whose pantry ingredients are being retrieved.",
+          description:
+            "The ID of the user whose pantry ingredients are being retrieved.",
         },
       ],
       responses: {
@@ -150,7 +160,8 @@ const userIngredientDocs = {
                     userId: {
                       type: "string",
                       format: "uuid",
-                      description: "The ID of the user who owns this pantry entry.",
+                      description:
+                        "The ID of the user who owns this pantry entry.",
                     },
                     ingredientId: {
                       type: "string",
@@ -159,18 +170,21 @@ const userIngredientDocs = {
                     },
                     unitQuantity: {
                       type: "integer",
-                      description: "The number of units (e.g., 2 packs, 3 bottles).",
+                      description:
+                        "The number of units (e.g., 2 packs, 3 bottles).",
                     },
                     totalAmount: {
                       type: "number",
                       format: "double",
                       nullable: true,
-                      description: "The total weight/volume (e.g., 500g, 1.5L).",
+                      description:
+                        "The total weight/volume (e.g., 500g, 1.5L).",
                     },
                     unitType: {
                       type: "string",
                       nullable: true,
-                      description: "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                      description:
+                        "The unit of measurement (e.g., g, kg, ml, L, cups).",
                     },
                     expiryDate: {
                       type: "string",
@@ -190,10 +204,12 @@ const userIngredientDocs = {
           },
         },
         400: {
-          description: "Bad request. Possibly due to missing or invalid user ID.",
+          description:
+            "Bad request. Possibly due to missing or invalid user ID.",
         },
         404: {
-          description: "User not found or user has no ingredients in their pantry.",
+          description:
+            "User not found or user has no ingredients in their pantry.",
         },
         500: {
           description: "Internal server error.",
@@ -203,7 +219,8 @@ const userIngredientDocs = {
     patch: {
       summary: "Update a user's pantry ingredient",
       tags: ["User Ingredients (Pantry)"],
-      description: "Allows a user to update unitQuantity, totalAmount, or expiry_date for an ingredient in their pantry.",
+      description:
+        "Allows a user to update unitQuantity, totalAmount, or expiry_date for an ingredient in their pantry.",
       parameters: [
         {
           name: "id",
@@ -213,7 +230,8 @@ const userIngredientDocs = {
             type: "string",
             format: "uuid",
           },
-          description: "The unique ID of the user's pantry ingredient entry to be updated.",
+          description:
+            "The unique ID of the user's pantry ingredient entry to be updated.",
         },
       ],
       requestBody: {
@@ -226,26 +244,30 @@ const userIngredientDocs = {
                 unitQuantity: {
                   type: "integer",
                   minimum: 0,
-                  description: "The new unit quantity (e.g., 2 bottles). Must be a non-negative integer.",
+                  description:
+                    "The new unit quantity (e.g., 2 bottles). Must be a non-negative integer.",
                 },
                 totalAmount: {
                   type: "number",
                   format: "double",
                   minimum: 0,
                   nullable: true,
-                  description: "The new total amount (e.g., 500g flour). Must be a non-negative number or null.",
+                  description:
+                    "The new total amount (e.g., 500g flour). Must be a non-negative number or null.",
                 },
                 unitType: {
                   type: "string",
                   maxLength: 50,
                   nullable: true,
-                  description: "The unit of measurement (e.g., g, kg, ml, L, cups). Maximum length: 50 characters.",
+                  description:
+                    "The unit of measurement (e.g., g, kg, ml, L, cups). Maximum length: 50 characters.",
                 },
                 expiry_date: {
                   type: "string",
                   format: "date-time",
                   nullable: true,
-                  description: "The new expiry date for the ingredient in ISO 8601 format (e.g., '2025-12-31T00:00:00Z').",
+                  description:
+                    "The new expiry date for the ingredient in ISO 8601 format (e.g., '2025-12-31T00:00:00Z').",
                 },
               },
             },
@@ -268,7 +290,8 @@ const userIngredientDocs = {
                   userId: {
                     type: "string",
                     format: "uuid",
-                    description: "The ID of the user who owns this pantry entry.",
+                    description:
+                      "The ID of the user who owns this pantry entry.",
                   },
                   ingredientId: {
                     type: "string",
@@ -299,7 +322,8 @@ const userIngredientDocs = {
                   addedAt: {
                     type: "string",
                     format: "date-time",
-                    description: "Timestamp when the ingredient was originally added.",
+                    description:
+                      "Timestamp when the ingredient was originally added.",
                   },
                 },
               },
@@ -320,7 +344,8 @@ const userIngredientDocs = {
     delete: {
       summary: "Delete a user's pantry ingredient",
       tags: ["User Ingredients (Pantry)"],
-      description: "Deletes a pantry ingredient entry for a user. Returns an error if the entry does not exist.",
+      description:
+        "Deletes a pantry ingredient entry for a user. Returns an error if the entry does not exist.",
       parameters: [
         {
           name: "id",
@@ -330,7 +355,8 @@ const userIngredientDocs = {
             type: "string",
             format: "uuid",
           },
-          description: "The unique ID of the user's pantry ingredient entry to be deleted.",
+          description:
+            "The unique ID of the user's pantry ingredient entry to be deleted.",
         },
       ],
       responses: {
@@ -350,7 +376,8 @@ const userIngredientDocs = {
     get: {
       summary: "Get a user's pantry ingredient by ingredient ID",
       tags: ["User Ingredients (Pantry)"],
-      description: "Retrieves a specific ingredient from a user's pantry by the ingredient's ID.",
+      description:
+        "Retrieves a specific ingredient from a user's pantry by the ingredient's ID.",
       parameters: [
         {
           name: "userId",
@@ -370,7 +397,8 @@ const userIngredientDocs = {
             type: "string",
             format: "string",
           },
-          description: "The ID of the ingredient being searched for in the user's pantry.",
+          description:
+            "The ID of the ingredient being searched for in the user's pantry.",
         },
       ],
       responses: {
@@ -389,7 +417,8 @@ const userIngredientDocs = {
                   userId: {
                     type: "string",
                     format: "string",
-                    description: "The ID of the user who owns this pantry entry.",
+                    description:
+                      "The ID of the user who owns this pantry entry.",
                   },
                   ingredientId: {
                     type: "string",
@@ -398,7 +427,8 @@ const userIngredientDocs = {
                   },
                   unitQuantity: {
                     type: "integer",
-                    description: "The number of units (e.g., 2 packs, 3 bottles).",
+                    description:
+                      "The number of units (e.g., 2 packs, 3 bottles).",
                   },
                   totalAmount: {
                     type: "number",
@@ -409,7 +439,8 @@ const userIngredientDocs = {
                   unitType: {
                     type: "string",
                     nullable: true,
-                    description: "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                    description:
+                      "The unit of measurement (e.g., g, kg, ml, L, cups).",
                   },
                   expiryDate: {
                     type: "string",
@@ -433,6 +464,92 @@ const userIngredientDocs = {
         },
         404: {
           description: "User ingredient entry not found.",
+        },
+        500: {
+          description: "Internal server error.",
+        },
+      },
+    },
+  },
+
+  "/api/v1/user-ingredient/{id}/quick-restock": {
+    patch: {
+      summary: "Quick restock a user's pantry ingredient",
+      tags: ["User Ingredients (Pantry)"],
+      description:
+        "Automatically increases the `unitQuantity` and `totalAmount` of a user's pantry ingredient by the base values defined in the ingredient table.",
+      parameters: [
+        {
+          name: "id",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+            format: "uuid",
+          },
+          description:
+            "The unique ID of the user's pantry ingredient entry to restock.",
+        },
+      ],
+      responses: {
+        200: {
+          description: "Ingredient successfully restocked.",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  id: {
+                    type: "string",
+                    format: "uuid",
+                    description: "The unique ID of the pantry entry.",
+                  },
+                  userId: {
+                    type: "string",
+                    format: "uuid",
+                    description:
+                      "The ID of the user who owns this pantry entry.",
+                  },
+                  ingredientId: {
+                    type: "string",
+                    format: "uuid",
+                    description: "The ID of the ingredient being restocked.",
+                  },
+                  unitQuantity: {
+                    type: "integer",
+                    description: "The updated unit quantity after restocking.",
+                  },
+                  totalAmount: {
+                    type: "number",
+                    format: "double",
+                    nullable: true,
+                    description: "The updated total amount after restocking.",
+                  },
+                  unitType: {
+                    type: "string",
+                    nullable: true,
+                    description:
+                      "The unit of measurement (e.g., g, kg, ml, L, cups).",
+                  },
+                  expiryDate: {
+                    type: "string",
+                    format: "date-time",
+                    nullable: true,
+                    description: "Expiry date of the ingredient if provided.",
+                  },
+                  addedAt: {
+                    type: "string",
+                    format: "date-time",
+                    description:
+                      "Timestamp when the ingredient was originally added.",
+                  },
+                },
+              },
+            },
+          },
+        },
+        404: {
+          description: "User ingredient or base ingredient not found.",
         },
         500: {
           description: "Internal server error.",
