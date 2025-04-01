@@ -4,6 +4,7 @@ import userIngredientDocs from "../docs/user-ingredientDocs";
 import recipeDocs from "../docs/recipeDocs";
 import unitTypeDocs from "../docs/unitTypeDocs";
 import profileDocs from "../docs/profileDocs";
+import bookmarkedRecipeDocs from "../docs/bookmark-recipeDocs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -25,53 +26,131 @@ const options: swaggerJsdoc.Options = {
         IngredientInput: {
           type: "object",
           properties: {
-            Ing_name: { type: "string", description: "The name of the ingredient" },
-            Ing_brand: { type: "string", description: "The brand of the ingredient (optional)" },
-            Ing_keywords: { type: "array", items: { type: "string" }, description: "Keywords related to the ingredient" },
-            Ing_units: { type: "array", items: { type: "string" }, description: "The unit types for the ingredient" },
-            Ing_barcode: { type: "string", description: "The barcode of the ingredient (optional)" },
+            Ing_name: {
+              type: "string",
+              description: "The name of the ingredient",
+            },
+            Ing_brand: {
+              type: "string",
+              description: "The brand of the ingredient (optional)",
+            },
+            Ing_keywords: {
+              type: "array",
+              items: { type: "string" },
+              description: "Keywords related to the ingredient",
+            },
+            Ing_units: {
+              type: "array",
+              items: { type: "string" },
+              description: "The unit types for the ingredient",
+            },
+            Ing_barcode: {
+              type: "string",
+              description: "The barcode of the ingredient (optional)",
+            },
           },
           required: ["ING_Name"],
         },
         CreateRecipeDTO: {
           type: "object",
           properties: {
-            recipe_name: { type: "string", description: "The name of the recipe" },
-            recipe_description: { type: "string", description: "Description of the recipe" },
+            recipe_name: {
+              type: "string",
+              description: "The name of the recipe",
+            },
+            recipe_description: {
+              type: "string",
+              description: "Description of the recipe",
+            },
             ingredients: {
               type: "array",
               items: { $ref: "#/components/schemas/RecipeIngredient" },
-              description: "List of ingredients in the recipe"
+              description: "List of ingredients in the recipe",
             },
-            recipe_instructions: { type: "string", description: "Cooking instructions for the recipe" },
-            cooking_time: { type: "number", description: "Estimated cooking time in minutes" },
-            author_id: { type: "string", description: "User ID or name of the author" },
+            recipe_instructions: {
+              type: "string",
+              description: "Cooking instructions for the recipe",
+            },
+            cooking_time: {
+              type: "number",
+              description: "Estimated cooking time in minutes",
+            },
+            author_id: {
+              type: "string",
+              description: "User ID or name of the author",
+            },
+            recipe_images: {
+              type: "array",
+              items: {
+                type: "string",
+                format: "uri",
+              },
+              description: "Array of image URLs related to the recipe",
+            },
           },
-          required: ["recipe_name", "recipe_description", "recipe_instructions", "cooking_time", "author_id"],
+          required: [
+            "recipe_name",
+            "recipe_description",
+            "recipe_instructions",
+            "cooking_time",
+            "author_id",
+          ],
         },
         UpdateRecipeDTO: {
           type: "object",
           properties: {
-            recipe_name: { type: "string", description: "The name of the recipe" },
+            recipe_name: {
+              type: "string",
+              description: "The name of the recipe",
+            },
             ingredients: {
               type: "array",
               items: { $ref: "#/components/schemas/RecipeIngredient" },
-              description: "List of ingredients in the recipe"
+              description: "List of ingredients in the recipe",
             },
-            recipe_description: { type: "string", description: "Description of the recipe" },
-            recipe_instructions: { type: "string", description: "Cooking instructions for the recipe" },
-            cooking_time: { type: "number", description: "Estimated cooking time in minutes" },
+            recipe_description: {
+              type: "string",
+              description: "Description of the recipe",
+            },
+            recipe_instructions: {
+              type: "string",
+              description: "Cooking instructions for the recipe",
+            },
+            cooking_time: {
+              type: "number",
+              description: "Estimated cooking time in minutes",
+            },
+            recipe_images: {
+              type: "array",
+              items: {
+                type: "string",
+                format: "uri",
+              },
+              description: "Array of image URLs related to the recipe",
+            },
           },
         },
         RecipeIngredient: {
           type: "object",
           properties: {
-            ingredient_id: { type: "string", description: "ID of the ingredient" },
-            ingredient_name: { type: "string", description: "name of the ingredient" },
-            quantity: { type: "number", description: "Quantity of the ingredient" },
-            unit: { type: "string", description: "Unit of measurement for the ingredient" },
+            ingredient_id: {
+              type: "string",
+              description: "ID of the ingredient",
+            },
+            ingredient_name: {
+              type: "string",
+              description: "name of the ingredient",
+            },
+            quantity: {
+              type: "number",
+              description: "Quantity of the ingredient",
+            },
+            unit: {
+              type: "string",
+              description: "Unit of measurement for the ingredient",
+            },
           },
-        }
+        },
       },
     },
     paths: {
@@ -80,6 +159,7 @@ const options: swaggerJsdoc.Options = {
       ...userIngredientDocs,
       ...recipeDocs,
       ...unitTypeDocs,
+      ...bookmarkedRecipeDocs
     },
     servers: [{ url: "http://localhost:3000" }],
   },
