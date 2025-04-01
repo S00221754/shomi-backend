@@ -27,7 +27,7 @@ export const addUserIngredient = async (
   const existingUserIngredient =
     await userIngredientRepository.findUserIngredient(
       user.id,
-      ingredient.Ing_id
+      userIngredient.ingredientId
     );
 
   if (existingUserIngredient) {
@@ -175,7 +175,9 @@ export const quickRestockUserIngredient = async (
     throw new createHttpError.NotFound("Ingredient not found.");
   }
 
-  userIngredient.unitQuantity += ingredient.Ing_quantity;
+  userIngredient.unitQuantity += 1;
+  userIngredient.totalAmount =
+    (Number(userIngredient.totalAmount) || 0) + (ingredient.Ing_quantity || 0);
 
   return await userIngredientRepository.updateUserIngredient(userIngredient);
 };
