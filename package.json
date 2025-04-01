@@ -11,7 +11,8 @@
     "update-database": "npm run typeorm -- migration:run -d src/database/data-source.ts",
     "add-migration": "cross-env npm run typeorm -- migration:generate src/database/migrations/%npm_config_name% -d src/database/data-source.ts",
     "revert-migration": "npm run typeorm -- migration:revert -d src/database/data-source.ts",
-    "migrate:show": "npm run typeorm -- migration:show -d src/database/data-source.ts"
+    "migrate:show": "npm run typeorm -- migration:show -d src/database/data-source.ts",
+    "migration:run:prod": "node dist/database/migrate.js"
   },
   "keywords": [],
   "author": "",
