@@ -1,51 +1,20 @@
-import AppDataSource from "./data-source";
 import { UnitType } from "../entities/UnitType";
+import AppDataSource from "./data-source";
 
 const defaultUnitTypes = [
-  "g",
-  "kg",
-  "mg",
-  "oz",
-  "lb",
-  "ml",
-  "l",
-  "tsp",
-  "tbsp",
-  "cup",
-  "pinch",
-  "slice",
-  "clove",
-  "can",
-  "pack",
-  "bottle",
-  "jar",
-  "piece",
-  "serving",
-  "unit"
+  "g", "kg", "mg", "oz", "lb",
+  "ml", "l", "tsp", "tbsp", "cup",
+  "pinch", "slice", "clove", "can",
+  "pack", "bottle", "jar", "piece", "unit", "serving"
 ];
 
-AppDataSource.initialize()
-  .then(async () => {
-    console.log("Running seed script for unit types...");
+export const seedUnitTypes = async () => {
+  const repo = AppDataSource.getRepository(UnitType);
 
-    const unitTypeRepo = AppDataSource.getRepository(UnitType);
-
-    for (const name of defaultUnitTypes) {
-      const existing = await unitTypeRepo.findOneBy({ name });
-
-      if (!existing) {
-        const unit = unitTypeRepo.create({ name });
-        await unitTypeRepo.save(unit);
-        console.log(`Seeded unit type: ${name}`);
-      } else {
-        console.log(`Unit type already exists: ${name}`);
-      }
+  for (const name of defaultUnitTypes) {
+    const exists = await repo.findOneBy({ name });
+    if (!exists) {
+      await repo.save(repo.create({ name }));
     }
-
-    console.log("Seeding complete.");
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error("Seeding failed:", err);
-    process.exit(1);
-  });
+  }
+};
