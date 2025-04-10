@@ -4,7 +4,7 @@ export type UserIngredientInput = {
     unitQuantity?: number;
     totalAmount?: number;
     unitType?: string;
-    expiryDate?: Date;
+    expiry_date?: Date;
 };
 
 export interface UpdateUserIngredientDTO {

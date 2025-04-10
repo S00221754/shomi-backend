@@ -26,8 +26,7 @@ export const addUserIngredient = async (
 
   // Only check for duplicates if there's no expiration date (non-expiring pantry item).
   // If expiryDate exists, we allow multiple batches of the same ingredient.
-
-  if (!userIngredient.expiryDate) {
+  if (!userIngredient.expiry_date) {
     const existingUserIngredient =
       await userIngredientRepository.findUserIngredient(
         user.id,
@@ -45,7 +44,7 @@ export const addUserIngredient = async (
     userIngredient.unitQuantity,
     userIngredient.totalAmount,
     userIngredient.unitType,
-    userIngredient.expiryDate
+    userIngredient.expiry_date
   );
 };
 
