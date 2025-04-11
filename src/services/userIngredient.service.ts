@@ -24,14 +24,18 @@ export const addUserIngredient = async (
     throw new createHttpError.NotFound("Ingredient not found");
   }
 
-  const existingUserIngredient =
-    await userIngredientRepository.findUserIngredient(
-      user.id,
-      userIngredient.ingredientId
-    );
+  // Only check for duplicates if there's no expiration date (non-expiring pantry item).
+  // If expiryDate exists, we allow multiple batches of the same ingredient.
+  if (!userIngredient.expiry_date) {
+    const existingUserIngredient =
+      await userIngredientRepository.findUserIngredient(
+        user.id,
+        userIngredient.ingredientId
+      );
 
-  if (existingUserIngredient) {
-    throw new createHttpError.Conflict("User already has this ingredient");
+    if (existingUserIngredient) {
+      throw new createHttpError.Conflict("User already has this ingredient");
+    }
   }
 
   return await userIngredientRepository.addUserIngredient(
@@ -40,7 +44,7 @@ export const addUserIngredient = async (
     userIngredient.unitQuantity,
     userIngredient.totalAmount,
     userIngredient.unitType,
-    userIngredient.expiryDate
+    userIngredient.expiry_date
   );
 };
 

@@ -3,7 +3,6 @@ import { Ingredient } from "./Ingredient";
 import { Profile } from "./Profile";
 
 @Entity("user_ingredients")
-@Unique(["user", "ingredient"])
 @Check(`"unitQuantity" >= 0`) // allows the quantity to be 0 but not negative reason: instead of removing this item from the pantry when it is zero push a notification to the user that this item is expired or empty
 @Check(`"totalAmount" >= 0`)
 export class UserIngredient extends BaseEntity {
@@ -29,8 +28,8 @@ export class UserIngredient extends BaseEntity {
   @Column({ type: "varchar", length: 50, nullable: true })
   unitType?: string; // e.g. for liquids, Litre, weight, grams, etc.
 
-  @Column({ type: "timestamp", nullable: true, default: null })
-  expiry_date?: Date; // need to see if i can allow multiple expiry dates for the same ingredient as there can be multiple of the same ingredient with different expiry dates
+  @Column({ type: "date", nullable: true, default: null })
+  expiry_date?: Date;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   added_at: Date;
