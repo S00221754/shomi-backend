@@ -17,6 +17,9 @@ export class Profile {
   @Column({ nullable: true })
   website: string;
 
+  @Column({ type: "text", nullable: true })
+  expo_push_token?: string;
+
   @Column({ type: "timestamp", nullable: true })
   updated_at: Date;
 }
