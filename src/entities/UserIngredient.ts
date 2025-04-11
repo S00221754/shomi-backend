@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, BaseEntity, Unique, Check } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  BaseEntity,
+  Unique,
+  Check,
+} from "typeorm";
 import { Ingredient } from "./Ingredient";
 import { Profile } from "./Profile";
 
@@ -13,7 +22,9 @@ export class UserIngredient extends BaseEntity {
   @JoinColumn({ name: "user_id" })
   user: Profile;
 
-  @ManyToOne(() => Ingredient, (ingredient) => ingredient.userIngredients, { onDelete: "CASCADE" })
+  @ManyToOne(() => Ingredient, (ingredient) => ingredient.userIngredients, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "ingredient_id" })
   // foreign key column for ingredients, delete cascade if ingredient is deleted
   ingredient: Ingredient;
@@ -30,6 +41,9 @@ export class UserIngredient extends BaseEntity {
 
   @Column({ type: "date", nullable: true, default: null })
   expiry_date?: Date;
+
+  @Column({ type: "timestamp", nullable: true })
+  notified_at?: Date;
 
   @Column({ type: "timestamp", default: () => "CURRENT_TIMESTAMP" })
   added_at: Date;
