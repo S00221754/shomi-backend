@@ -5,4 +5,6 @@ const router = Router();
 
 router.get("/:id", profileController.getProfileById);
 
+router.patch("/:id", profileController.updateProfile);
+
 export default router;
