@@ -13,7 +13,7 @@ import userIngredientRoutes from "./routes/user-ingredient.routes";
 import recipeRoutes from "./routes/recipes.routes";
 import unitTypeRoutes from "./routes/unit-types.routes";
 import bookmarkRecipeRoutes from "./routes/bookmarkRecipe.routes";
-
+import shoppingListRoutes from "./routes/shoppingList.routes";
 const app = express();
 
 // app.use(cors({
@@ -42,6 +42,9 @@ app.use("/api/v1/unit-types", unitTypeRoutes);
 
 // bookmark recipe routes
 app.use("/api/v1/bookmarks", bookmarkRecipeRoutes);
+
+// shopping list routes
+app.use("/api/v1/shopping-list", shoppingListRoutes);
 
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));

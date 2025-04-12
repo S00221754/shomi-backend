@@ -5,6 +5,7 @@ import recipeDocs from "../docs/recipeDocs";
 import unitTypeDocs from "../docs/unitTypeDocs";
 import profileDocs from "../docs/profileDocs";
 import bookmarkedRecipeDocs from "../docs/bookmark-recipeDocs";
+import shoppingListDocs from "../docs/shopping-listDocs";
 
 const options: swaggerJsdoc.Options = {
   definition: {
@@ -159,7 +160,8 @@ const options: swaggerJsdoc.Options = {
       ...userIngredientDocs,
       ...recipeDocs,
       ...unitTypeDocs,
-      ...bookmarkedRecipeDocs
+      ...bookmarkedRecipeDocs,
+      ...shoppingListDocs,
     },
     servers: [{ url: "http://localhost:3000" }],
   },
