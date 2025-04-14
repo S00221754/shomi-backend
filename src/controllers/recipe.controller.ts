@@ -3,7 +3,7 @@ import recipeService from "../services/recipe.service";
 import asyncHandler from "../utils/asyncHandler";
 import { CreateRecipeDTO, UpdateRecipeDTO } from "../types/recipe";
 import { Recipe } from "entities/Recipe";
-import recommendRecipeService from "services/RecommendRecipe.service";
+import recommendRecipeService from "../services/RecommendRecipe.service";
 
 export const addRecipe = asyncHandler(
   async (req: Request<{}, {}, CreateRecipeDTO>, res: Response<Recipe>) => {

@@ -2,13 +2,12 @@
 
 import { Recipe } from "../entities/Recipe";
 import { Ingredient } from "../entities/Ingredient";
-import { UserIngredient } from "../entities/UserIngredient";
 import { RecipeIngredient } from "../types/recipeIngredient";
 import createHttpError from "http-errors";
 import ingredientRepository from "../repositories/ingredientRepository";
 import userIngredientRepository from "../repositories/userIngredientRepository";
 import recipeRepository from "../repositories/recipeRepository";
-import { RecipeMatchResult } from "types/recipe";
+import { RecipeMatchResult } from "../types/recipe";
 
 export const getRecommendedRecipes = async (
   userId: string,
