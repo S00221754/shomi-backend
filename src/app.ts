@@ -14,6 +14,8 @@ import recipeRoutes from "./routes/recipes.routes";
 import unitTypeRoutes from "./routes/unit-types.routes";
 import bookmarkRecipeRoutes from "./routes/bookmarkRecipe.routes";
 import shoppingListRoutes from "./routes/shoppingList.routes";
+import ingredientCategoryRoutes from "./routes/ingredientCategories.route";
+
 const app = express();
 
 // app.use(cors({
@@ -45,6 +47,9 @@ app.use("/api/v1/bookmarks", bookmarkRecipeRoutes);
 
 // shopping list routes
 app.use("/api/v1/shopping-list", shoppingListRoutes);
+
+// ingredient categories routes
+app.use("/api/v1/ingredient-categories", ingredientCategoryRoutes);
 
 // swagger
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
