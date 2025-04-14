@@ -58,6 +58,8 @@ export const getUserIngredients = async (
       ingredient: {
         Ing_id: true,
         Ing_name: true,
+        Ing_quantity: true,
+        Ing_quantity_units: true,
       },
     },
   });
