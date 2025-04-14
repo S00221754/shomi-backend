@@ -7,4 +7,7 @@ export class IngredientCategory extends BaseEntity {
 
   @Column({ unique: true })
   name: string;
+
+  @Column({ type: "text", nullable: true })
+  description?: string;
 }
