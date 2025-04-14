@@ -2,8 +2,6 @@ import { IngredientCategory } from "../entities/IngredientCategories";
 import { UnitType } from "../entities/UnitType";
 import AppDataSource from "./data-source";
 
-console.log("🔥 SEED SCRIPT STARTED");
-
 const defaultUnitTypes = [
   "g",
   "kg",
@@ -62,8 +60,6 @@ const defaultIngredientCategories = [
 ];
 
 export const seedUnitTypes = async () => {
-  console.log("Seeding unit types...");
-
   const repo = AppDataSource.getRepository(UnitType);
 
   for (const name of defaultUnitTypes) {

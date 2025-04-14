@@ -139,8 +139,6 @@ export const updateUserIngredient = async (
 };
 
 export const deleteUserIngredient = async (ids: string[]): Promise<void> => {
-  console.log("service", ids);
-
   if (!Array.isArray(ids) || ids.length === 0) {
     throw new createHttpError.BadRequest("No user ingredient IDs provided.");
   }

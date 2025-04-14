@@ -1,3 +1,4 @@
+import { Recipe } from "entities/Recipe";
 import { RecipeIngredient } from "./recipeIngredient";
 
 export type CreateRecipeDTO = {
@@ -18,4 +19,13 @@ export class UpdateRecipeDTO {
   cooking_time?: number;
   recipe_images?: string[];
   author_id?: string;
+}
+
+export interface RecipeMatchResult {
+  recipe: Recipe;
+  score: number;
+  matchDetails: {
+    ingredientId: string;
+    type: "direct" | "category" | "keyword";
+  }[];
 }
