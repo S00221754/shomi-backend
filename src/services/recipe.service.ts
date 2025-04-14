@@ -158,21 +158,21 @@ export const deleteRecipe = async (id: string): Promise<void> => {
   await recipeRepository.deleteRecipe(id);
 };
 
-export const getRecommendedRecipes = async (
-  userId: string,
-  ingredientsIdsArray: string[] = []
-): Promise<Recipe[]> => {
-  const user = await profileRepository.findProfileById(userId);
+// export const getRecommendedRecipes = async (
+//   userId: string,
+//   ingredientsIdsArray: string[] = []
+// ): Promise<Recipe[]> => {
+//   const user = await profileRepository.findProfileById(userId);
 
-  if (!user) {
-    throw new createHttpError.NotFound("User not found.");
-  }
+//   if (!user) {
+//     throw new createHttpError.NotFound("User not found.");
+//   }
 
-  return await recipeRepository.getRecommendedRecipes(
-    userId,
-    ingredientsIdsArray
-  );
-};
+//   return await recipeRepository.getRecommendedRecipes(
+//     userId,
+//     ingredientsIdsArray
+//   );
+// };
 
 export default {
   addRecipe,
@@ -180,5 +180,5 @@ export default {
   findRecipeById,
   updateRecipe,
   deleteRecipe,
-  getRecommendedRecipes,
+  // getRecommendedRecipes,
 };

@@ -85,7 +85,6 @@ const getIngredientByBarcode = async (barcode: string) => {
   const result = await ingredientRepository.findIngredientByBarcode(barcode);
 
   if (!result) {
-    console.log(`Ingredient with barcode ${barcode} not found in database.`);
     return null;
   }
 

@@ -9,8 +9,7 @@ import {
 export const createUserIngredient = asyncHandler(
   async (req: Request, res: Response) => {
     const userIngredientInput: UserIngredientInput = req.body.userIngredient;
-    console.log("userIngredientInput", userIngredientInput);
-     //need to fix frontend for sending an object and not flat data.
+    //need to fix frontend for sending an object and not flat data.
     const result = await userIngredientService.addUserIngredient(
       userIngredientInput
     );
@@ -59,8 +58,6 @@ export const quickRestockUserIngredient = asyncHandler(
 
 export const deleteUserIngredient = asyncHandler(
   async (req: Request, res: Response) => {
-    console.log(req);
-
     const ids: string[] = req.body.userIngredientIds;
     await userIngredientService.deleteUserIngredient(ids);
     res.status(204).send();
