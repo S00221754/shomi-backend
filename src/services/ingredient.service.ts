@@ -1,87 +1,102 @@
 import { IngredientInput } from "types/ingredient";
 import ingredientRepository from "../repositories/ingredientRepository";
-import createHttpError from 'http-errors';
+import createHttpError from "http-errors";
 
 // Create ingredient
 const createIngredient = async (ingredient: IngredientInput) => {
-    const existingIngredient = await ingredientRepository.ingredientExists(ingredient.Ing_name, ingredient.Ing_brand, ingredient.Ing_barcode);
+  const existingIngredient = await ingredientRepository.ingredientExists(
+    ingredient.Ing_name,
+    ingredient.Ing_brand,
+    ingredient.Ing_barcode
+  );
 
-    // if ingredient already exists, potentially pop up saying this item is already in the database would you like to add it to your pantry?
-    if (existingIngredient) {
-        throw new createHttpError.BadRequest("Ingredient already exists");
-    }
+  if (existingIngredient) {
+    throw new createHttpError.BadRequest("Ingredient already exists");
+  }
 
-    const result = await ingredientRepository.addIngredient(ingredient);
+  const result = await ingredientRepository.addIngredient(ingredient);
 
-    if (!result) {
-        throw new createHttpError.InternalServerError();
-    }
+  if (!result) {
+    throw new createHttpError.InternalServerError();
+  }
 
-    return result;
+  return result;
 };
 
 // get ingredients
 const getIngredients = async () => {
-    const result = await ingredientRepository.getIngredients();
-    return result;
-}
+  const result = await ingredientRepository.getIngredients();
+  return result;
+};
 
 // get ingredient by id
 const getIngredientById = async (id: string) => {
-    const result = await ingredientRepository.getIngredientById(id);
+  const result = await ingredientRepository.getIngredientById(id);
 
-    if(!result){
-      throw new createHttpError.NotFound();
-    }
+  if (!result) {
+    throw new createHttpError.NotFound();
+  }
 
-    return result;
-}
+  return result;
+};
 
 // edit an ingredient
-const editIngredient = async (id: string, editedIngredient: IngredientInput) => {
+const editIngredient = async (
+  id: string,
+  editedIngredient: IngredientInput
+) => {
+  const existingIngredient = await ingredientRepository.getIngredientById(id);
 
-    const existingIngredient = await ingredientRepository.getIngredientById(id);
+  if (!existingIngredient) {
+    throw new createHttpError.NotFound();
+  }
 
-    if(!existingIngredient){
-      throw new createHttpError.NotFound();
-    }
+  const result = await ingredientRepository.editIngredient(
+    id,
+    editedIngredient
+  );
 
-    const result = await ingredientRepository.editIngredient(id,editedIngredient);
+  if (!result) {
+    throw new createHttpError.InternalServerError();
+  }
 
-    if(!result){
-      throw new createHttpError.InternalServerError();
-    }
-
-    return result;
+  return result;
 };
 
 // delete an ingredient
 const deleteIngredient = async (id: string) => {
-    const existingIngredient = await ingredientRepository.getIngredientById(id);
+  const existingIngredient = await ingredientRepository.getIngredientById(id);
 
-    if(!existingIngredient){
-      throw new createHttpError.NotFound();
-    }
+  if (!existingIngredient) {
+    throw new createHttpError.NotFound();
+  }
 
-    const result = await ingredientRepository.deleteIngredient(id);
+  const result = await ingredientRepository.deleteIngredient(id);
 
-    if(!result){
-      throw new createHttpError.InternalServerError();
-    }
+  if (!result) {
+    throw new createHttpError.InternalServerError();
+  }
 
-    return result;
+  return result;
 };
 
 // there needs to be additional checks as the barcode is not unique for need to add barcode type to help uniquely identify the ingredient but for demo purposes this will do.
 const getIngredientByBarcode = async (barcode: string) => {
-    const result = await ingredientRepository.findIngredientByBarcode(barcode);
+  const result = await ingredientRepository.findIngredientByBarcode(barcode);
 
-    if(!result){
-      console.log(`Ingredient with barcode ${barcode} not found in database.`);
-      return null;
-    }
+  if (!result) {
+    console.log(`Ingredient with barcode ${barcode} not found in database.`);
+    return null;
+  }
 
-    return result;
+  return result;
 };
 
-export default { createIngredient, getIngredients, getIngredientById, editIngredient, deleteIngredient, getIngredientByBarcode };
+export default {
+  createIngredient,
+  getIngredients,
+  getIngredientById,
+  editIngredient,
+  deleteIngredient,
+  getIngredientByBarcode,
+};

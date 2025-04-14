@@ -17,7 +17,7 @@ export const getIngredientById = async (id: string): Promise<Ingredient | null> 
 
 // Create ingredient
 export const addIngredient = async (ingredient: IngredientInput): Promise<Ingredient> => {
-    const newIngredient = ingredientRepo.create(ingredient);
+    const newIngredient = ingredientRepo.create(ingredient);   
     return await ingredientRepo.save(newIngredient);
 };
 

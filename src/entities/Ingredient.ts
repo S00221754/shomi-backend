@@ -1,6 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, OneToMany } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from "typeorm";
 import { UserIngredient } from "./UserIngredient";
-
+import { IngredientCategory } from "./IngredientCategories";
 
 @Entity("ingredients")
 export class Ingredient extends BaseEntity {
@@ -25,6 +33,13 @@ export class Ingredient extends BaseEntity {
   @Column({ nullable: true })
   Ing_barcode: string;
 
-  @OneToMany(() => UserIngredient, (userIngredient) => userIngredient.ingredient)
+  @ManyToOne(() => IngredientCategory, { nullable: true })
+  @JoinColumn({ name: "category_id" })
+  category: IngredientCategory;
+
+  @OneToMany(
+    () => UserIngredient,
+    (userIngredient) => userIngredient.ingredient
+  )
   userIngredients: UserIngredient[];
 }
