@@ -62,24 +62,3 @@ export const seedIngredientCategories = async () => {
     }
   }
 };
-
-// for local seeding
-AppDataSource.initialize()
-  .then(async () => {
-    console.log("Data Source Initialized");
-
-    await AppDataSource.runMigrations();
-    console.log("Migrations complete");
-
-    await seedUnitTypes();
-    console.log("Unit types seeded");
-
-    await seedIngredientCategories();
-    console.log("Ingredient categories seeded");
-
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error("Seeding failed:", err);
-    process.exit(1);
-  });
