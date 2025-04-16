@@ -1,28 +1,82 @@
+import { DeepPartial } from "typeorm";
 import { IngredientCategory } from "../entities/IngredientCategories";
 import { UnitType } from "../entities/UnitType";
 import AppDataSource from "./data-source";
 
 const defaultUnitTypes = [
-  "g",
-  "kg",
-  "mg",
-  "oz",
-  "lb",
-  "ml",
-  "l",
-  "tsp",
-  "tbsp",
-  "cup",
-  "pinch",
-  "slice",
-  "clove",
-  "can",
-  "pack",
-  "bottle",
-  "jar",
-  "piece",
-  "unit",
-  "serving",
+  // mass
+  {
+    name: "g",
+    label: "Grams",
+    type: "mass",
+    baseUnit: "g",
+    multiplierToBase: 1,
+  },
+  {
+    name: "kg",
+    label: "Kilograms",
+    type: "mass",
+    baseUnit: "g",
+    multiplierToBase: 1000,
+  },
+  {
+    name: "mg",
+    label: "Milligrams",
+    type: "mass",
+    baseUnit: "g",
+    multiplierToBase: 0.001,
+  },
+  {
+    name: "oz",
+    label: "Ounces",
+    type: "mass",
+    baseUnit: "g",
+    multiplierToBase: 28.35,
+  },
+  {
+    name: "lb",
+    label: "Pounds",
+    type: "mass",
+    baseUnit: "g",
+    multiplierToBase: 453.592,
+  },
+
+  // volume
+  {
+    name: "ml",
+    label: "Milliliters",
+    type: "volume",
+    baseUnit: "ml",
+    multiplierToBase: 1,
+  },
+  {
+    name: "l",
+    label: "Liters",
+    type: "volume",
+    baseUnit: "ml",
+    multiplierToBase: 1000,
+  },
+  {
+    name: "tsp",
+    label: "Teaspoons",
+    type: "volume",
+    baseUnit: "ml",
+    multiplierToBase: 4.93,
+  },
+  {
+    name: "tbsp",
+    label: "Tablespoons",
+    type: "volume",
+    baseUnit: "ml",
+    multiplierToBase: 14.79,
+  },
+  {
+    name: "cup",
+    label: "Cups",
+    type: "volume",
+    baseUnit: "ml",
+    multiplierToBase: 240,
+  },
 ];
 
 const defaultIngredientCategories = [
@@ -59,13 +113,13 @@ const defaultIngredientCategories = [
   { name: "Uncategorized", description: "Items not yet categorised" },
 ];
 
+// may need updating for production database
 export const seedUnitTypes = async () => {
   const repo = AppDataSource.getRepository(UnitType);
-
-  for (const name of defaultUnitTypes) {
-    const exists = await repo.findOneBy({ name });
+  for (const unit of defaultUnitTypes) {
+    const exists = await repo.findOneBy({ name: unit.name });
     if (!exists) {
-      await repo.save(repo.create({ name }));
+      await repo.save(repo.create(unit as DeepPartial<UnitType>));
     }
   }
 };
