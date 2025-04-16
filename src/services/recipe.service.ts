@@ -4,6 +4,9 @@ import recipeRepository from "../repositories/recipeRepository";
 import { CreateRecipeDTO, UpdateRecipeDTO } from "types/recipe";
 import ingredientRepository from "../repositories/ingredientRepository";
 import profileRepository from "../repositories/profileRepository";
+import userIngredientRepository from "../repositories/userIngredientRepository";
+import AppDataSource from "../database/data-source";
+import { UnitType } from "../entities/UnitType";
 
 const requiredFields: { key: keyof CreateRecipeDTO; label: string }[] = [
   { key: "recipe_name", label: "Recipe Name" },
@@ -174,6 +177,117 @@ export const deleteRecipe = async (id: string): Promise<void> => {
 //   );
 // };
 
+//NEEDS A LOT OF TESTING SCENARIOS
+export const getRecipeDeductionPreview = async (
+  userId: string,
+  recipeId: string
+) => {
+  const recipe = await recipeRepository.findRecipeById(recipeId);
+  if (!recipe) throw new createHttpError.NotFound("Recipe not found");
+
+  const pantry = await userIngredientRepository.getUserIngredients(userId);
+  if (!pantry.length) throw new createHttpError.NotFound("Pantry is empty");
+
+  // will change to a method instead of repository to maintain clean artchitecture
+  const unitTypes = await AppDataSource.getRepository(UnitType).find();
+  const getUnitMeta = (name: string) =>
+    unitTypes.find(
+      (u) => u.name.trim().toLowerCase() === name?.trim().toLowerCase()
+    );
+
+  // initial values
+  const now = new Date();
+  const previewResults = [];
+  const MINIMUM_SCORE = 5; // Minimum score to consider a match
+
+  // Goes through each ingredient in the recipe and finds the best match in the pantry
+  for (const ingredient of recipe.ingredients) {
+    const recipeUnit = getUnitMeta(ingredient.unit);
+    if (!recipeUnit) continue;
+
+    // Filter pantry items that match the recipe unit type and are not expired
+    // TODO: needs to match with the next expriing date of the pantry item
+    // may be handled by the dedecution service
+    const potentialMatches = pantry.filter((item) => {
+      const pantryUnit = getUnitMeta(item.unitType);
+      if (!pantryUnit) return false;
+
+      const sameType =
+        recipeUnit.type === pantryUnit.type &&
+        recipeUnit.baseUnit === pantryUnit.baseUnit;
+      const notExpired = !item.expiry_date || new Date(item.expiry_date) > now;
+
+      return sameType && notExpired;
+    });
+
+    // rank the match by a scoring system
+    const scored = potentialMatches.map((batch) => {
+      let score = 0;
+      const reasons = [];
+
+      // If the ingredient ID matches, max score given
+      const isExactMatch = batch.ingredient.Ing_id == ingredient.ingredient_id;
+      if (isExactMatch) {
+        score += 10;
+        reasons.push("Exact ingredient match");
+      }
+
+      // if recipe name contains a keyword from the pantry ingredient
+      if (
+        batch.ingredient.Ing_keywords?.some((kw) =>
+          ingredient.ingredient_name?.toLowerCase().includes(kw)
+        )
+      ) {
+        score += 2;
+        reasons.push("Keyword match");
+      }
+
+      //if name includes the ingredient
+      if (
+        batch.ingredient.Ing_name?.toLowerCase().includes(
+          ingredient.ingredient_name.toLowerCase()
+        )
+      ) {
+        score += 1;
+        reasons.push("Name inclusion match");
+      }
+
+      // we reduce the score if match wasn't exact but reached a high score
+      if (!isExactMatch && score >= 10) {
+        score = 5;
+        reasons.push("Score reduced due to lack of exact match");
+      }
+
+      return {
+        recipe_ingredient: ingredient,
+        matched_user_ingredient: {
+          id: batch.id,
+          ingredient_id: batch.ingredient.Ing_id,
+          ingredient_name: batch.ingredient.Ing_name,
+          unit: batch.unitType,
+        },
+        confidence_score: score,
+        reason: reasons.join(", "),
+      };
+    });
+
+    scored.sort((a, b) => b.confidence_score - a.confidence_score);
+    const topMatch =
+      scored.length > 0 && scored[0].confidence_score >= MINIMUM_SCORE
+        ? scored[0]
+        : null;
+
+    previewResults.push({
+      recipe_ingredient: ingredient,
+      matched_user_ingredient: topMatch?.matched_user_ingredient || null,
+      reason: topMatch?.reason || "No match found",
+      confidence_score: topMatch?.confidence_score || 0,
+    });
+  }
+
+  return previewResults;
+};
+
 export default {
   addRecipe,
   getRecipes,
@@ -181,4 +295,5 @@ export default {
   updateRecipe,
   deleteRecipe,
   // getRecommendedRecipes,
+  getRecipeDeductionPreview,
 };

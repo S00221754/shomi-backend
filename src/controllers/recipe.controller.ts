@@ -71,3 +71,17 @@ export const getRecommendedRecipes = asyncHandler(
     res.json(result);
   }
 );
+
+export const getDeductionPreview = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { recipeId } = req.params;
+    const { user_id } = req.body;
+
+    const result = await recipeService.getRecipeDeductionPreview(
+      user_id,
+      recipeId
+    );
+
+    res.json(result);
+  }
+);

@@ -1,8 +1,8 @@
 import { Repository } from "typeorm";
 import AppDataSource from "../database/data-source";
 import { UserIngredient } from "../entities/UserIngredient";
-import { Ingredient } from "entities/Ingredient";
-import { Profile } from "entities/Profile";
+import { Ingredient } from "../entities/Ingredient";
+import { Profile } from "../entities/Profile";
 
 const userIngredientRepo: Repository<UserIngredient> =
   AppDataSource.getRepository(UserIngredient);
