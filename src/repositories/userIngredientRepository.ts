@@ -72,6 +72,7 @@ export const getUserIngredientById = async (
     where: {
       id: id,
     },
+    relations: ["user", "ingredient"],
   });
 };
 

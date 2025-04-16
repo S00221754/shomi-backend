@@ -22,4 +22,6 @@ router.post(
   recipeController.getDeductionPreview
 );
 
+router.post("/:recipeId/cooked", recipeController.cookedRecipe);
+
 export default router;

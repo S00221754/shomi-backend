@@ -288,6 +288,94 @@ export const getRecipeDeductionPreview = async (
   return previewResults;
 };
 
+export const cookedRecipe = async (
+  userId: string,
+  deductions: {
+    user_ingredient_id: string;
+    recipe_quantity: number;
+    recipe_unit: string;
+  }[]
+) => {
+  //Update to not use repo
+  const unitTypes = await AppDataSource.getRepository(UnitType).find();
+  const getUnitMeta = (name: string) =>
+    unitTypes.find(
+      (u) => u.name.trim().toLowerCase() === name?.trim().toLowerCase()
+    );
+
+  const updated: string[] = [];
+  const skipped: string[] = [];
+
+  for (const entry of deductions) {
+    const { user_ingredient_id, recipe_quantity, recipe_unit } = entry;
+
+    const userIngredient = await userIngredientRepository.getUserIngredientById(
+      user_ingredient_id
+    );
+    if (!userIngredient || userIngredient.user.id !== userId) {
+      skipped.push(user_ingredient_id);
+      continue;
+    }
+
+    const now = new Date();
+    const baseIngredient = userIngredient.ingredient;
+    const recipeUnit = getUnitMeta(recipe_unit);
+    const pantryUnit = getUnitMeta(userIngredient.unitType);
+
+    if (!recipeUnit || !pantryUnit) {
+      skipped.push(user_ingredient_id);
+      continue;
+    }
+
+    // checks if the conversion are the same (e.g. mass to mass, volume to volume)
+    const isCompatible =
+      recipeUnit.type === pantryUnit.type &&
+      recipeUnit.baseUnit === pantryUnit.baseUnit;
+
+    if (!isCompatible) {
+      skipped.push(user_ingredient_id);
+      continue;
+    }
+
+    // check for expiry date
+    if (
+      userIngredient.expiry_date &&
+      new Date(userIngredient.expiry_date) <= now
+    ) {
+      skipped.push(user_ingredient_id);
+      continue;
+    }
+
+    // converstions
+    const recipeAmountBase = recipe_quantity * recipeUnit.multiplierToBase;
+    const pantryAmountBase =
+      userIngredient.totalAmount * pantryUnit.multiplierToBase;
+
+    const remainingBase = Math.max(pantryAmountBase - recipeAmountBase, 0);
+    const updatedTotal = remainingBase / pantryUnit.multiplierToBase;
+
+    const baseUnitSize = baseIngredient.Ing_quantity || 1;
+    let updatedUnitQuantity = Math.floor(updatedTotal / baseUnitSize);
+
+    if (updatedTotal > 0 && updatedUnitQuantity === 0) {
+      updatedUnitQuantity = 1;
+    }
+
+    // Update the user ingredient
+    userIngredient.totalAmount = updatedTotal;
+    userIngredient.unitQuantity = updatedUnitQuantity;
+
+    await userIngredientRepository.updateUserIngredient(userIngredient);
+    updated.push(user_ingredient_id);
+  }
+
+  return {
+    success: true,
+    updated,
+    skipped,
+  };
+};
+
 export default {
   addRecipe,
   getRecipes,
@@ -296,4 +384,5 @@ export default {
   deleteRecipe,
   // getRecommendedRecipes,
   getRecipeDeductionPreview,
+  cookedRecipe,
 };

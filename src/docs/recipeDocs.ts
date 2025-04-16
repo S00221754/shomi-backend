@@ -320,6 +320,100 @@ const recipeDocs = {
       },
     },
   },
+  "/api/v1/recipes/{recipeId}/cooked": {
+    post: {
+      summary: "Mark recipe as cooked and deduct ingredients",
+      description:
+        "Deducts the specified amounts from the user's pantry based on the confirmed ingredient matches from the deduction preview. Respects unit conversions and handles partial deductions down to zero.",
+      tags: ["Recipe"],
+      parameters: [
+        {
+          name: "recipeId",
+          in: "path",
+          required: true,
+          schema: {
+            type: "string",
+          },
+          description: "The ID of the recipe being cooked.",
+        },
+      ],
+      requestBody: {
+        required: true,
+        content: {
+          "application/json": {
+            schema: {
+              type: "object",
+              required: ["user_id", "deductions"],
+              properties: {
+                user_id: {
+                  type: "string",
+                  description: "The ID of the user who cooked the recipe.",
+                },
+                deductions: {
+                  type: "array",
+                  description: "List of pantry items to deduct from.",
+                  items: {
+                    type: "object",
+                    required: [
+                      "user_ingredient_id",
+                      "recipe_quantity",
+                      "recipe_unit",
+                    ],
+                    properties: {
+                      user_ingredient_id: {
+                        type: "string",
+                      },
+                      recipe_quantity: {
+                        type: "number",
+                      },
+                      recipe_unit: {
+                        type: "string",
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      responses: {
+        200: {
+          description: "Deduction completed successfully",
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  success: { type: "boolean" },
+                  updated: {
+                    type: "array",
+                    items: { type: "string" },
+                    description: "IDs of updated user ingredients",
+                  },
+                  skipped: {
+                    type: "array",
+                    items: { type: "string" },
+                    description:
+                      "IDs of ingredients that were skipped (e.g., invalid, insufficient, or expired)",
+                  },
+                },
+              },
+            },
+          },
+        },
+        400: {
+          description: "Invalid input or request body.",
+        },
+        404: {
+          description: "UserIngredient or Recipe not found.",
+        },
+        500: {
+          description: "Server error.",
+        },
+      },
+    },
+  },
 };
 
 export default recipeDocs;

@@ -85,3 +85,14 @@ export const getDeductionPreview = asyncHandler(
     res.json(result);
   }
 );
+
+export const cookedRecipe = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { recipeId } = req.params;
+    const { user_id, deductions } = req.body;
+
+    const result = await recipeService.cookedRecipe(user_id, deductions);
+
+    res.json(result);
+  }
+);
