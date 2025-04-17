@@ -4,6 +4,7 @@ import asyncHandler from "../utils/asyncHandler";
 import { CreateRecipeDTO, UpdateRecipeDTO } from "../types/recipe";
 import { Recipe } from "../entities/Recipe";
 import recommendRecipeService from "../services/recipeRecommend.service";
+import { AuthenticatedRequest } from "middleware/authMiddleware";
 
 export const addRecipe = asyncHandler(
   async (req: Request<{}, {}, CreateRecipeDTO>, res: Response<Recipe>) => {
@@ -49,11 +50,8 @@ export const deleteRecipe = asyncHandler(
 );
 
 export const getRecommendedRecipes = asyncHandler(
-  async (
-    req: Request<{ userId: string }, {}, { selectedIngredients?: string[] }>,
-    res: Response<Recipe[]>
-  ) => {
-    const { userId } = req.params;
+  async (req: AuthenticatedRequest, res: Response<Recipe[]>) => {
+    const userId = req.user?.sub;
     let { selectedIngredients } = req.body;
 
     if (
@@ -73,26 +71,25 @@ export const getRecommendedRecipes = asyncHandler(
 );
 
 export const getDeductionPreview = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const { recipeId } = req.params;
-    const { user_id } = req.body;
+    const userId = req.user?.sub;
 
     const result = await recipeService.getRecipeDeductionPreview(
-      user_id,
+      userId,
       recipeId
     );
-
     res.json(result);
   }
 );
 
 export const cookedRecipe = asyncHandler(
-  async (req: Request, res: Response) => {
+  async (req: AuthenticatedRequest, res: Response) => {
     const { recipeId } = req.params;
-    const { user_id, deductions } = req.body;
+    const { deductions } = req.body;
+    const userId = req.user?.sub;
 
-    const result = await recipeService.cookedRecipe(user_id, deductions);
-
+    const result = await recipeService.cookedRecipe(userId, deductions);
     res.json(result);
   }
 );

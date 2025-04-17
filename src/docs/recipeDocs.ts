@@ -3,6 +3,7 @@ const recipeDocs = {
     post: {
       summary: "Create a new recipe",
       tags: ["Recipe"],
+      security: [{ BearerAuth: [] as string[] }],
       requestBody: {
         description: "Recipe details",
         required: true,
@@ -15,30 +16,21 @@ const recipeDocs = {
         },
       },
       responses: {
-        201: {
-          description: "Recipe created successfully",
-        },
-        400: {
-          description: "Bad Request",
-        },
-        500: {
-          description: "Server error",
-        },
+        201: { description: "Recipe created successfully" },
+        400: { description: "Bad Request" },
+        500: { description: "Server error" },
       },
     },
     get: {
       summary: "Get all recipes",
       tags: ["Recipe"],
       responses: {
-        200: {
-          description: "List of recipes",
-        },
-        500: {
-          description: "Server error",
-        },
+        200: { description: "List of recipes" },
+        500: { description: "Server error" },
       },
     },
   },
+
   "/api/v1/recipes/{id}": {
     get: {
       summary: "Get a recipe by ID",
@@ -48,34 +40,25 @@ const recipeDocs = {
           name: "id",
           in: "path",
           required: true,
-          schema: {
-            type: "string",
-          },
+          schema: { type: "string" },
         },
       ],
       responses: {
-        200: {
-          description: "Recipe details",
-        },
-        404: {
-          description: "Recipe not found",
-        },
-        500: {
-          description: "Server error",
-        },
+        200: { description: "Recipe details" },
+        404: { description: "Recipe not found" },
+        500: { description: "Server error" },
       },
     },
     patch: {
       summary: "Update a recipe by ID",
       tags: ["Recipe"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           name: "id",
           in: "path",
           required: true,
-          schema: {
-            type: "string",
-          },
+          schema: { type: "string" },
         },
       ],
       requestBody: {
@@ -90,64 +73,37 @@ const recipeDocs = {
         },
       },
       responses: {
-        200: {
-          description: "Recipe updated successfully",
-        },
-        400: {
-          description: "Bad Request",
-        },
-        404: {
-          description: "Recipe not found",
-        },
-        500: {
-          description: "Server error",
-        },
+        200: { description: "Recipe updated successfully" },
+        400: { description: "Bad Request" },
+        404: { description: "Recipe not found" },
+        500: { description: "Server error" },
       },
     },
     delete: {
       summary: "Delete a recipe by ID",
       tags: ["Recipe"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           name: "id",
           in: "path",
           required: true,
-          schema: {
-            type: "string",
-          },
+          schema: { type: "string" },
         },
       ],
       responses: {
-        200: {
-          description: "Recipe deleted successfully",
-        },
-        404: {
-          description: "Recipe not found",
-        },
-        500: {
-          description: "Server error",
-        },
+        200: { description: "Recipe deleted successfully" },
+        404: { description: "Recipe not found" },
+        500: { description: "Server error" },
       },
     },
   },
-  "/api/v1/recipes/recommended/{userId}": {
+
+  "/api/v1/recipes/recommended": {
     post: {
-      summary: "Get recommended recipes for a user",
-      description:
-        "Returns a list of recommended recipes based on the user's pantry ingredients. Users can optionally provide selected ingredients to prioritize specific recipes.",
+      summary: "Get recommended recipes for the authenticated user",
       tags: ["Recipe"],
-      parameters: [
-        {
-          name: "userId",
-          in: "path",
-          required: true,
-          schema: {
-            type: "string",
-          },
-          description:
-            "The unique identifier of the user for whom recipes are being recommended.",
-        },
-      ],
+      security: [{ BearerAuth: [] as string[] }],
       requestBody: {
         required: false,
         content: {
@@ -157,11 +113,7 @@ const recipeDocs = {
               properties: {
                 selectedIngredients: {
                   type: "array",
-                  items: {
-                    type: "string",
-                  },
-                  description:
-                    "Array of ingredient IDs that the user wants to prioritize in the recommendations.",
+                  items: { type: "string" },
                 },
               },
             },
@@ -169,88 +121,25 @@ const recipeDocs = {
         },
       },
       responses: {
-        "200": {
-          description:
-            "List of recommended recipes based on user's pantry and selected ingredients.",
-          content: {
-            "application/json": {
-              schema: {
-                type: "array",
-                items: {
-                  $ref: "#/components/schemas/Recipe",
-                },
-              },
-            },
-          },
-        },
-        "400": {
-          description: "Bad Request - Invalid input data.",
-        },
-        "404": {
-          description: "User not found or no recommendations available.",
-        },
-        "500": {
-          description: "Server error - Unexpected issue occurred.",
-        },
+        200: { description: "Recommended recipes returned" },
+        400: { description: "Bad Request" },
+        404: { description: "No recommendations found" },
+        500: { description: "Server error" },
       },
     },
   },
-  components: {
-    schemas: {
-      Recipe: {
-        type: "object",
-        properties: {
-          id: {
-            type: "string",
-            description: "The unique identifier of the recipe.",
-          },
-          name: {
-            type: "string",
-            description: "The name of the recipe.",
-          },
-          ingredients: {
-            type: "array",
-            items: {
-              type: "object",
-              properties: {
-                ingredient_id: {
-                  type: "string",
-                  description: "The unique identifier of the ingredient.",
-                },
-                quantity: {
-                  type: "string",
-                  description: "The quantity of the ingredient required.",
-                },
-              },
-            },
-          },
-          instructions: {
-            type: "string",
-            description: "Step-by-step cooking instructions.",
-          },
-          time: {
-            type: "string",
-            description: "Estimated time required to prepare the recipe.",
-          },
-        },
-      },
-    },
-  },
+
   "/api/v1/recipes/{recipeId}/deduction-preview": {
     post: {
       summary: "Get deduction preview for a recipe",
-      description:
-        "Returns a preview of which user pantry items would be matched to the recipe ingredients if the user cooked this recipe. Used for user confirmation before deduction. Does not perform any quantity calculations.",
       tags: ["Recipe"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           name: "recipeId",
           in: "path",
           required: true,
-          schema: {
-            type: "string",
-          },
-          description: "The ID of the recipe to preview deductions for.",
+          schema: { type: "string" },
         },
       ],
       requestBody: {
@@ -260,11 +149,7 @@ const recipeDocs = {
             schema: {
               type: "object",
               properties: {
-                user_id: {
-                  type: "string",
-                  description:
-                    "The ID of the user whose pantry will be checked.",
-                },
+                user_id: { type: "string" },
               },
               required: ["user_id"],
             },
@@ -272,69 +157,25 @@ const recipeDocs = {
         },
       },
       responses: {
-        200: {
-          description: "List of matches per recipe ingredient",
-          content: {
-            "application/json": {
-              schema: {
-                type: "array",
-                items: {
-                  type: "object",
-                  properties: {
-                    recipe_ingredient: {
-                      type: "object",
-                      properties: {
-                        ingredient_id: { type: "string" },
-                        ingredient_name: { type: "string" },
-                        quantity: { type: "number" },
-                        unit: { type: "string" },
-                      },
-                    },
-                    matched_user_ingredient: {
-                      type: "object",
-                      nullable: true,
-                      properties: {
-                        id: { type: "string" },
-                        ingredient_id: { type: "string" },
-                        ingredient_name: { type: "string" },
-                        unit: { type: "string" },
-                      },
-                    },
-                    confidence_score: { type: "number" },
-                    reason: { type: "string" },
-                  },
-                },
-              },
-            },
-          },
-        },
-        400: {
-          description: "Missing or invalid user ID or recipe ID.",
-        },
-        404: {
-          description: "Recipe or pantry data not found.",
-        },
-        500: {
-          description: "Server error",
-        },
+        200: { description: "List of matches" },
+        400: { description: "Bad request" },
+        404: { description: "Recipe or pantry data not found" },
+        500: { description: "Server error" },
       },
     },
   },
+
   "/api/v1/recipes/{recipeId}/cooked": {
     post: {
       summary: "Mark recipe as cooked and deduct ingredients",
-      description:
-        "Deducts the specified amounts from the user's pantry based on the confirmed ingredient matches from the deduction preview. Respects unit conversions and handles partial deductions down to zero.",
       tags: ["Recipe"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           name: "recipeId",
           in: "path",
           required: true,
-          schema: {
-            type: "string",
-          },
-          description: "The ID of the recipe being cooked.",
+          schema: { type: "string" },
         },
       ],
       requestBody: {
@@ -345,13 +186,9 @@ const recipeDocs = {
               type: "object",
               required: ["user_id", "deductions"],
               properties: {
-                user_id: {
-                  type: "string",
-                  description: "The ID of the user who cooked the recipe.",
-                },
+                user_id: { type: "string" },
                 deductions: {
                   type: "array",
-                  description: "List of pantry items to deduct from.",
                   items: {
                     type: "object",
                     required: [
@@ -360,15 +197,9 @@ const recipeDocs = {
                       "recipe_unit",
                     ],
                     properties: {
-                      user_ingredient_id: {
-                        type: "string",
-                      },
-                      recipe_quantity: {
-                        type: "number",
-                      },
-                      recipe_unit: {
-                        type: "string",
-                      },
+                      user_ingredient_id: { type: "string" },
+                      recipe_quantity: { type: "number" },
+                      recipe_unit: { type: "string" },
                     },
                   },
                 },
@@ -379,7 +210,7 @@ const recipeDocs = {
       },
       responses: {
         200: {
-          description: "Deduction completed successfully",
+          description: "Deduction completed",
           content: {
             "application/json": {
               schema: {
@@ -389,28 +220,19 @@ const recipeDocs = {
                   updated: {
                     type: "array",
                     items: { type: "string" },
-                    description: "IDs of updated user ingredients",
                   },
                   skipped: {
                     type: "array",
                     items: { type: "string" },
-                    description:
-                      "IDs of ingredients that were skipped (e.g., invalid, insufficient, or expired)",
                   },
                 },
               },
             },
           },
         },
-        400: {
-          description: "Invalid input or request body.",
-        },
-        404: {
-          description: "UserIngredient or Recipe not found.",
-        },
-        500: {
-          description: "Server error.",
-        },
+        400: { description: "Bad Request" },
+        404: { description: "Not Found" },
+        500: { description: "Server error" },
       },
     },
   },

@@ -5,12 +5,15 @@ import {
   getBookmarkedRecipesByUser,
   isRecipeBookmarked,
 } from "../controllers/bookmark-recipes.controller";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = Router();
 
+router.use(authMiddleware);
+
 router.post("/", createBookmark);
 router.delete("/", deleteBookmark);
-router.get("/:userId", getBookmarkedRecipesByUser);
-router.get("/:userId/:recipeId", isRecipeBookmarked);
+router.get("/", getBookmarkedRecipesByUser);
+router.get("/:recipeId", isRecipeBookmarked);
 
 export default router;

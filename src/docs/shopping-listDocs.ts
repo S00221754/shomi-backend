@@ -1,55 +1,9 @@
 const shoppingListDocs = {
-  "/api/v1/shopping-list/{userId}": {
-    get: {
-      summary: "Get a user's shopping list",
-      tags: ["Shopping List"],
-      parameters: [
-        {
-          in: "path",
-          name: "userId",
-          schema: { type: "string", format: "uuid" },
-          required: true,
-          description: "The user's UUID",
-        },
-      ],
-      responses: {
-        200: {
-          description: "Shopping list retrieved successfully",
-          content: {
-            "application/json": {
-              example: [
-                {
-                  Shop_id: "6c44d4b4-8735-44dc-a457-e66f5a41a123",
-                  user_id: "3bf5eea8-fed5-4695-a564-667a3a6767cd",
-                  ingredient_id: 101,
-                  Shop_quantity: 2,
-                  Shop_added_automatically: true,
-                  Shop_reason: "expiring",
-                  Shop_created_at: "2025-04-12T12:00:00.000Z",
-                  ingredient: {
-                    Ing_id: 101,
-                    Ing_name: "Milk",
-                    Ing_brand: "DairyPure",
-                    Ing_quantity: 1000,
-                    Ing_quantity_units: "ml",
-                    Ing_keywords: ["dairy", "white"],
-                    Ing_barcode: "1234567890123",
-                  },
-                },
-              ],
-            },
-          },
-        },
-        404: { description: "User not found" },
-        500: { description: "Server error" },
-      },
-    },
-  },
-
   "/api/v1/shopping-list": {
     post: {
       summary: "Add an item to the shopping list",
       tags: ["Shopping List"],
+      security: [{ BearerAuth: [] as string[] }],
       requestBody: {
         required: true,
         content: {
@@ -98,10 +52,59 @@ const shoppingListDocs = {
     },
   },
 
+  "/api/v1/shopping-list/{userId}": {
+    get: {
+      summary: "Get a user's shopping list",
+      tags: ["Shopping List"],
+      security: [{ BearerAuth: [] as string[] }],
+      parameters: [
+        {
+          in: "path",
+          name: "userId",
+          schema: { type: "string", format: "uuid" },
+          required: true,
+          description: "The user's UUID",
+        },
+      ],
+      responses: {
+        200: {
+          description: "Shopping list retrieved successfully",
+          content: {
+            "application/json": {
+              example: [
+                {
+                  Shop_id: "6c44d4b4-8735-44dc-a457-e66f5a41a123",
+                  user_id: "3bf5eea8-fed5-4695-a564-667a3a6767cd",
+                  ingredient_id: 101,
+                  Shop_quantity: 2,
+                  Shop_added_automatically: true,
+                  Shop_reason: "expiring",
+                  Shop_created_at: "2025-04-12T12:00:00.000Z",
+                  ingredient: {
+                    Ing_id: 101,
+                    Ing_name: "Milk",
+                    Ing_brand: "DairyPure",
+                    Ing_quantity: 1000,
+                    Ing_quantity_units: "ml",
+                    Ing_keywords: ["dairy", "white"],
+                    Ing_barcode: "1234567890123",
+                  },
+                },
+              ],
+            },
+          },
+        },
+        404: { description: "User not found" },
+        500: { description: "Server error" },
+      },
+    },
+  },
+
   "/api/v1/shopping-list/{id}": {
     patch: {
       summary: "Update a shopping list item",
       tags: ["Shopping List"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           in: "path",
@@ -153,6 +156,7 @@ const shoppingListDocs = {
     delete: {
       summary: "Delete an item from the shopping list",
       tags: ["Shopping List"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           in: "path",
@@ -174,6 +178,7 @@ const shoppingListDocs = {
     patch: {
       summary: "Mark a shopping list item as bought",
       tags: ["Shopping List"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           in: "path",

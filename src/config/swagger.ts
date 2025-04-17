@@ -154,6 +154,11 @@ const options: swaggerJsdoc.Options = {
           },
         },
       },
+      security: [
+        {
+          BearerAuth: [],
+        },
+      ],
     },
     paths: {
       ...ingredientDocs,

@@ -3,6 +3,7 @@ const profileDocs = {
     get: {
       summary: "Get a user profile by ID",
       tags: ["Profiles"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           in: "path",
@@ -19,10 +20,10 @@ const profileDocs = {
             "application/json": {
               example: {
                 id: "3bf5eea8-fed5-4695-a564-667a3a6767cd",
-                username: "troystan",
-                full_name: "Troy Shilton",
+                username: "sampleuser",
+                full_name: "Sample User",
                 avatar_url: "https://example.com/avatar.jpg",
-                website: "https://shomi.app",
+                website: "https://example.com",
                 updated_at: "2024-03-25T12:00:00.000Z",
               },
             },
@@ -35,6 +36,7 @@ const profileDocs = {
     patch: {
       summary: "Update a user profile",
       tags: ["Profiles"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
         {
           in: "path",
@@ -58,8 +60,8 @@ const profileDocs = {
                 expo_push_token: { type: "string" },
               },
               example: {
-                full_name: "John Doe",
-                username: "johndoe",
+                full_name: "Jane Doe",
+                username: "janedoe",
                 avatar_url: "https://example.com/avatar.jpg",
                 website: "https://example.com",
                 expo_push_token: "ExponentPushToken[xxxxxxxxxxxxxxxxxxxxxx]",

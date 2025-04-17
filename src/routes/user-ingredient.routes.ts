@@ -7,19 +7,17 @@ import {
   getUserIngredientByIngredientId,
   quickRestockUserIngredient,
 } from "../controllers/user-ingredient.controller";
+import { authMiddleware } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
+router.use(authMiddleware);
+
 router.post("/", createUserIngredient);
-
-router.get("/:id", getUserIngredients);
-
+router.get("/", getUserIngredients);
 router.patch("/:id", updateUserIngredient);
-
 router.delete("/", deleteUserIngredient);
-
-router.get("/:userId/:ingredientId", getUserIngredientByIngredientId);
-
+router.get("/ingredient/:ingredientId", getUserIngredientByIngredientId);
 router.patch("/:id/quick-restock", quickRestockUserIngredient);
 
 export default router;

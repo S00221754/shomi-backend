@@ -3,6 +3,7 @@ const userIngredientDocs = {
     post: {
       summary: "Add an ingredient to a user's pantry",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Adds an ingredient to a user's pantry after verifying the user and ingredient exist.",
       requestBody: {
@@ -128,6 +129,7 @@ const userIngredientDocs = {
     get: {
       summary: "Get a user's pantry ingredients",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Retrieves all ingredients that a user has added to their pantry.",
       parameters: [
@@ -219,6 +221,7 @@ const userIngredientDocs = {
     patch: {
       summary: "Update a user's pantry ingredient",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Allows a user to update unitQuantity, totalAmount, or expiry_date for an ingredient in their pantry.",
       parameters: [
@@ -344,6 +347,7 @@ const userIngredientDocs = {
     delete: {
       summary: "Delete a user's pantry ingredient",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Deletes a pantry ingredient entry for a user. Returns an error if the entry does not exist.",
       parameters: [
@@ -372,10 +376,11 @@ const userIngredientDocs = {
       },
     },
   },
-  "/api/v1/user-ingredient/{userId}/{ingredientId}": {
+  "/api/v1/user-ingredient/ingredient/{ingredientId}": {
     get: {
       summary: "Get a user's pantry ingredient by ingredient ID",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Retrieves a specific ingredient from a user's pantry by the ingredient's ID.",
       parameters: [
@@ -476,6 +481,7 @@ const userIngredientDocs = {
     patch: {
       summary: "Quick restock a user's pantry ingredient",
       tags: ["User Ingredients (Pantry)"],
+      security: [{ BearerAuth: [] as string[] }],
       description:
         "Automatically increases the `unitQuantity` and `totalAmount` of a user's pantry ingredient by the base values defined in the ingredient table.",
       parameters: [

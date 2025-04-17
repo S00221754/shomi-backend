@@ -3,6 +3,7 @@ const bookmarkedRecipeDocs = {
     post: {
       summary: "Bookmark a recipe",
       tags: ["Bookmarked Recipes"],
+      security: [{ BearerAuth: [] as string[] }],
       requestBody: {
         required: true,
         content: {
@@ -10,17 +11,15 @@ const bookmarkedRecipeDocs = {
             schema: {
               type: "object",
               properties: {
-                user_id: { type: "string" },
-                recipe_id: { type: "string" },
+                recipeId: { type: "string" },
               },
-              required: ["user_id", "recipe_id"],
+              required: ["recipeId"],
             },
           },
         },
       },
       responses: {
         201: { description: "Recipe bookmarked successfully" },
-        404: { description: "User or recipe not found" },
         409: { description: "Recipe already bookmarked" },
         500: { description: "Server error" },
       },
@@ -28,6 +27,7 @@ const bookmarkedRecipeDocs = {
     delete: {
       summary: "Unbookmark a recipe",
       tags: ["Bookmarked Recipes"],
+      security: [{ BearerAuth: [] as string[] }],
       requestBody: {
         required: true,
         content: {
@@ -35,10 +35,9 @@ const bookmarkedRecipeDocs = {
             schema: {
               type: "object",
               properties: {
-                user_id: { type: "string" },
-                recipe_id: { type: "string" },
+                recipeId: { type: "string" },
               },
-              required: ["user_id", "recipe_id"],
+              required: ["recipeId"],
             },
           },
         },
@@ -49,41 +48,23 @@ const bookmarkedRecipeDocs = {
         500: { description: "Server error" },
       },
     },
-  },
-
-  "/api/v1/bookmarks/{userId}": {
     get: {
-      summary: "Get all bookmarked recipes by user",
+      summary: "Get all bookmarked recipes for the authenticated user",
       tags: ["Bookmarked Recipes"],
-      parameters: [
-        {
-          in: "path",
-          name: "userId",
-          schema: { type: "string" },
-          required: true,
-          description: "User ID",
-        },
-      ],
+      security: [{ BearerAuth: [] as string[] }],
       responses: {
         200: { description: "List of bookmarked recipes" },
-        404: { description: "User not found" },
         500: { description: "Server error" },
       },
     },
   },
 
-  "/api/v1/bookmarks/{userId}/{recipeId}": {
+  "/api/v1/bookmarks/{recipeId}": {
     get: {
-      summary: "Check if a recipe is bookmarked by a user",
+      summary: "Check if a recipe is bookmarked by the authenticated user",
       tags: ["Bookmarked Recipes"],
+      security: [{ BearerAuth: [] as string[] }],
       parameters: [
-        {
-          in: "path",
-          name: "userId",
-          schema: { type: "string" },
-          required: true,
-          description: "User ID",
-        },
         {
           in: "path",
           name: "recipeId",
