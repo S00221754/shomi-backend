@@ -6,6 +6,7 @@ import {
   deleteUserIngredient,
   getUserIngredientByIngredientId,
   quickRestockUserIngredient,
+  getPaginatedUserIngredients,
 } from "../controllers/user-ingredient.controller";
 import { authMiddleware } from "../middleware/authMiddleware";
 
@@ -15,6 +16,7 @@ router.use(authMiddleware);
 
 router.post("/", createUserIngredient);
 router.get("/", getUserIngredients);
+router.get("/paginated", getPaginatedUserIngredients);
 router.patch("/:id", updateUserIngredient);
 router.delete("/", deleteUserIngredient);
 router.get("/ingredient/:ingredientId", getUserIngredientByIngredientId);

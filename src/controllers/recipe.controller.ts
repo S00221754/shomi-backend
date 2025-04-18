@@ -5,6 +5,7 @@ import { CreateRecipeDTO, UpdateRecipeDTO } from "../types/recipe";
 import { Recipe } from "../entities/Recipe";
 import recommendRecipeService from "../services/recipeRecommend.service";
 import { AuthenticatedRequest } from "middleware/authMiddleware";
+import { PaginatedResponse } from "types/response";
 
 export const addRecipe = asyncHandler(
   async (req: Request<{}, {}, CreateRecipeDTO>, res: Response<Recipe>) => {
@@ -15,9 +16,18 @@ export const addRecipe = asyncHandler(
 );
 
 export const getRecipes = asyncHandler(
-  async (req: Request, res: Response<Recipe[]>) => {
-    const result = await recipeService.getRecipes();
-    res.json(result);
+  async (req: Request, res: Response<PaginatedResponse<Recipe>>) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const { data, total } = await recipeService.getRecipes(page, limit);
+
+    res.json({
+      data,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   }
 );
 

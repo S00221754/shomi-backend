@@ -78,6 +78,43 @@ export const getUserIngredients = async (
   });
 };
 
+// get paginated user ingredients
+export const getPaginatedUserIngredients = async (
+  userId: string,
+  page: number = 1,
+  limit: number = 10
+): Promise<{ data: UserIngredient[]; total: number }> => {
+  const [data, total] = await userIngredientRepo.findAndCount({
+    where: {
+      user: { id: userId },
+    },
+    relations: ["ingredient"],
+    select: {
+      id: true,
+      unitQuantity: true,
+      totalAmount: true,
+      unitType: true,
+      expiry_date: true,
+      added_at: true,
+      ingredient: {
+        Ing_id: true,
+        Ing_name: true,
+        Ing_quantity: true,
+        Ing_quantity_units: true,
+      },
+    },
+    skip: (page - 1) * limit,
+    take: limit,
+    order: {
+      ingredient: {
+        Ing_name: "ASC",
+      },
+    },
+  });
+
+  return { data, total };
+};
+
 export const getUserIngredientById = async (
   id: string
 ): Promise<UserIngredient | null> => {
@@ -115,6 +152,7 @@ export default {
   findUserIngredient,
   findAllUserIngredientsByIngredient,
   getUserIngredients,
+  getPaginatedUserIngredients,
   updateUserIngredient,
   getUserIngredientById,
   deleteUserIngredient,

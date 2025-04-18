@@ -62,8 +62,11 @@ export const addRecipe = async (recipe: CreateRecipeDTO): Promise<Recipe> => {
   return await recipeRepository.addRecipe(recipe, user);
 };
 
-export const getRecipes = async (): Promise<Recipe[]> => {
-  return await recipeRepository.getRecipes();
+export const getRecipes = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<{ data: Recipe[]; total: number }> => {
+  return await recipeRepository.getRecipes(page, limit);
 };
 
 export const findRecipeById = async (

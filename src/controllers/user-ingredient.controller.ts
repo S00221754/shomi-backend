@@ -6,6 +6,8 @@ import {
   UserIngredientInput,
 } from "types/userIngredient";
 import { AuthenticatedRequest } from "middleware/authMiddleware";
+import { PaginatedResponse } from "types/response";
+import { UserIngredient } from "entities/UserIngredient";
 
 export const createUserIngredient = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
@@ -34,6 +36,31 @@ export const getUserIngredientById = asyncHandler(
     const id = req.params.id;
     const result = await userIngredientService.getUserIngredientById(id);
     res.status(200).json(result);
+  }
+);
+
+export const getPaginatedUserIngredients = asyncHandler(
+  async (
+    req: AuthenticatedRequest,
+    res: Response<PaginatedResponse<UserIngredient>>
+  ) => {
+    const userId = req.user?.sub;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const { data, total } =
+      await userIngredientService.getPaginatedUserIngredients(
+        userId,
+        page,
+        limit
+      );
+
+    res.status(200).json({
+      data,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   }
 );
 
