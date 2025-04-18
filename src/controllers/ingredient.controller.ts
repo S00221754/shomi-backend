@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import ingredientService from "../services/ingredient.service";
 import asyncHandler from "../utils/asyncHandler";
 import { IngredientInput } from "types/ingredient";
+import { PaginatedResponse } from "types/response";
+import { Ingredient } from "entities/Ingredient";
 
 // Create a new ingredient
 export const createIngredient = asyncHandler(
@@ -27,6 +29,25 @@ export const getIngredientById = asyncHandler(
     const { id } = req.params;
     const result = await ingredientService.getIngredientById(id);
     res.json(result);
+  }
+);
+
+// get paginated ingredients
+export const getPaginatedIngredients = asyncHandler(
+  async (req: Request, res: Response<PaginatedResponse<Ingredient>>) => {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const { data, total } = await ingredientService.getPaginatedIngredients(
+      page,
+      limit
+    );
+
+    res.status(200).json({
+      data,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalItems: total,
+    });
   }
 );
 

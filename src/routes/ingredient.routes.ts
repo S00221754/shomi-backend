@@ -5,8 +5,9 @@ import { authMiddleware } from "../middleware/authMiddleware";
 const router = express.Router();
 
 router.get("/", ingredientController.getIngredients);
-router.get("/:id", ingredientController.getIngredientById);
+router.get("/paginated", ingredientController.getPaginatedIngredients);
 router.get("/barcode/:barcode", ingredientController.getIngredientByBarcode);
+router.get("/:id", ingredientController.getIngredientById);
 
 router.use(authMiddleware);
 
