@@ -40,6 +40,19 @@ export const findUserIngredient = async (
   });
 };
 
+export const findAllUserIngredientsByIngredient = async (
+  userId: string,
+  ingredientId: string
+): Promise<UserIngredient[]> => {
+  return await userIngredientRepo.find({
+    where: {
+      user: { id: userId },
+      ingredient: { Ing_id: ingredientId },
+    },
+    relations: ["ingredient"],
+  });
+};
+
 export const getUserIngredients = async (
   userid: string
 ): Promise<UserIngredient[]> => {
@@ -100,6 +113,7 @@ export const deleteUserIngredient = async (ids: string[]): Promise<void> => {
 export default {
   addUserIngredient,
   findUserIngredient,
+  findAllUserIngredientsByIngredient,
   getUserIngredients,
   updateUserIngredient,
   getUserIngredientById,
