@@ -40,6 +40,16 @@ const getIngredientById = async (id: string) => {
   return result;
 };
 
+// get paginated ingredients
+const getPaginatedIngredients = async (page: number, limit: number) => {
+  const result = await ingredientRepository.getPaginatedIngredients(
+    page,
+    limit
+  );
+
+  return result;
+};
+
 // edit an ingredient
 const editIngredient = async (
   id: string,
@@ -95,6 +105,7 @@ export default {
   createIngredient,
   getIngredients,
   getIngredientById,
+  getPaginatedIngredients,
   editIngredient,
   deleteIngredient,
   getIngredientByBarcode,

@@ -66,6 +66,24 @@ export const getUserIngredients = async (
   return await userIngredientRepository.getUserIngredients(userid);
 };
 
+export const getPaginatedUserIngredients = async (
+  userId: string,
+  page: number,
+  limit: number
+): Promise<{ data: UserIngredient[]; total: number }> => {
+  const user = await profileRepository.findProfileById(userId);
+
+  if (!user) {
+    throw new createHttpError.NotFound("User not found");
+  }
+
+  return await userIngredientRepository.getPaginatedUserIngredients(
+    userId,
+    page,
+    limit
+  );
+};
+
 export const getUserIngredientById = async (
   id: string
 ): Promise<UserIngredient | null> => {
@@ -193,6 +211,7 @@ export const quickRestockUserIngredient = async (
 export default {
   addUserIngredient,
   getUserIngredients,
+  getPaginatedUserIngredients,
   getUserIngredientById,
   updateUserIngredient,
   deleteUserIngredient,

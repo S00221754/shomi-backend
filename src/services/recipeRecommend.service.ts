@@ -48,7 +48,7 @@ export const getRecommendedRecipes = async (
   );
 
   // get all recipes (further optimization by adding pagination)
-  const allRecipes = await recipeRepository.getRecipes();
+  const { data: allRecipes } = await recipeRepository.getRecipes();
 
   // score each recipe based on the match type direct match with the selected ingredients, or pantry or category match
   const scoredRecipes: RecipeMatchResult[] = allRecipes.map((recipe) => {

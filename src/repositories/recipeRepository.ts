@@ -38,9 +38,18 @@ export const findRecipeById = async (
   return result;
 };
 
-// add pagination
-export const getRecipes = async (): Promise<Recipe[]> => {
-  return await RecipeRepo.find();
+// get recipes with pagination
+export const getRecipes = async (
+  page: number = 1,
+  limit: number = 10
+): Promise<{ data: Recipe[]; total: number }> => {
+  const [data, total] = await RecipeRepo.findAndCount({
+    skip: (page - 1) * limit,
+    take: limit,
+    order: { created_at: "DESC" },
+  });
+
+  return { data, total };
 };
 
 // update recipe
