@@ -4,7 +4,7 @@ import { UnitType } from "../entities/UnitType";
 import AppDataSource from "./data-source";
 
 const defaultUnitTypes = [
-  // mass
+  //#region mass
   {
     name: "g",
     label: "Grams",
@@ -41,7 +41,9 @@ const defaultUnitTypes = [
     multiplierToBase: 453.592,
   },
 
-  // volume
+  //#endregion
+
+  //#region volume
   {
     name: "ml",
     label: "Milliliters",
@@ -77,6 +79,32 @@ const defaultUnitTypes = [
     baseUnit: "ml",
     multiplierToBase: 240,
   },
+
+  //#endregion
+
+  //#region Special Cases
+  {
+    name: "clove",
+    label: "Clove",
+    type: "item",
+    baseUnit: "clove",
+    multiplierToBase: 1,
+  },
+  {
+    name: "slice",
+    label: "Slice",
+    type: "item",
+    baseUnit: "slice",
+    multiplierToBase: 1,
+  },
+  {
+    name: "egg",
+    label: "Egg",
+    type: "item",
+    baseUnit: "egg",
+    multiplierToBase: 1,
+  },
+  //#endregion
 ];
 
 const defaultIngredientCategories = [
@@ -111,6 +139,7 @@ const defaultIngredientCategories = [
   { name: "Cheese", description: "e.g. cheddar, mozzarella, Red Leicester" },
   { name: "Bread & Bakery", description: "e.g. sliced bread, rolls, scones" },
   { name: "Uncategorized", description: "Items not yet categorised" },
+  { name: "Eggs", description: "e.g. chicken eggs, duck eggs" },
 ];
 
 // may need updating for production database
