@@ -3,6 +3,7 @@ import asyncHandler from "../utils/asyncHandler";
 import shoppingListService from "../services/shoppingList.service";
 import { AuthenticatedRequest } from "../middleware/authMiddleware";
 
+// get shopping list for user
 export const getShoppingListForUser = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.sub;
@@ -11,6 +12,7 @@ export const getShoppingListForUser = asyncHandler(
   }
 );
 
+// add shopping list item
 export const addShoppingListItem = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.sub;
@@ -22,6 +24,7 @@ export const addShoppingListItem = asyncHandler(
   }
 );
 
+// update shopping list item
 export const updateShoppingListItem = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
@@ -33,6 +36,7 @@ export const updateShoppingListItem = asyncHandler(
   }
 );
 
+// delete shopping list item
 export const deleteShoppingListItem = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;
@@ -41,6 +45,7 @@ export const deleteShoppingListItem = asyncHandler(
   }
 );
 
+// mark shopping list item as bought
 export const markBought = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const { id } = req.params;

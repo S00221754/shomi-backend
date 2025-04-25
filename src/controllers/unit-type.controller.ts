@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import unitTypeService from "../services/unitType.service";
 import asyncHandler from "../utils/asyncHandler";
 
+// most of these endpoints are not used in the frontend yet, but they are here for future use and to keep the code organized
+
 export const getUnitTypes = asyncHandler(async (req: Request, res: Response) => {
   const result = await unitTypeService.getUnitTypes();
   res.json(result);

@@ -9,6 +9,7 @@ import { AuthenticatedRequest } from "middleware/authMiddleware";
 import { PaginatedResponse } from "types/response";
 import { UserIngredient } from "entities/UserIngredient";
 
+// create user ingredient
 export const createUserIngredient = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.sub;
@@ -23,6 +24,7 @@ export const createUserIngredient = asyncHandler(
   }
 );
 
+// get all user ingredients
 export const getUserIngredients = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.sub;
@@ -31,6 +33,7 @@ export const getUserIngredients = asyncHandler(
   }
 );
 
+// get user ingredient by id
 export const getUserIngredientById = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const id = req.params.id;
@@ -39,6 +42,7 @@ export const getUserIngredientById = asyncHandler(
   }
 );
 
+// get user ingredients in a paginated format
 export const getPaginatedUserIngredients = asyncHandler(
   async (
     req: AuthenticatedRequest,
@@ -64,6 +68,7 @@ export const getPaginatedUserIngredients = asyncHandler(
   }
 );
 
+// update user ingredient
 export const updateUserIngredient = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const id = req.params.id;
@@ -76,6 +81,7 @@ export const updateUserIngredient = asyncHandler(
   }
 );
 
+// quick restock user ingredient (deprecated as add to list feature was implemented but kept for future use)
 export const quickRestockUserIngredient = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userIngredientId = req.params.id;
@@ -86,6 +92,7 @@ export const quickRestockUserIngredient = asyncHandler(
   }
 );
 
+// delete user ingredient
 export const deleteUserIngredient = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const ids: string[] = req.body.userIngredientIds;
@@ -94,6 +101,7 @@ export const deleteUserIngredient = asyncHandler(
   }
 );
 
+// get user ingredient by ingredient id
 export const getUserIngredientByIngredientId = asyncHandler(
   async (req: AuthenticatedRequest, res: Response) => {
     const userId = req.user?.sub;

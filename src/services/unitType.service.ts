@@ -18,6 +18,7 @@ export const deleteUnitType = async (id: string): Promise<void> => {
     await unitTypeRepository.removeUnitType(id);
 };
 
+// depreated, but kept for future use
 export const updateUnitTypes = async (): Promise<void> => {
     // Get all unique unit types used in the Ingredient table
     const usedUnitTypes = await ingredientRepository.getDistinctUnitTypes();

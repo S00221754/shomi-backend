@@ -4,9 +4,9 @@ import { UserIngredient } from "../entities/UserIngredient";
 import { Ingredient } from "../entities/Ingredient";
 import { Profile } from "../entities/Profile";
 
-const userIngredientRepo: Repository<UserIngredient> =
-  AppDataSource.getRepository(UserIngredient);
+const userIngredientRepo: Repository<UserIngredient> = AppDataSource.getRepository(UserIngredient);
 
+// Add a new user ingredient
 export const addUserIngredient = async (
   userId: string,
   ingredient: Ingredient,
@@ -27,10 +27,8 @@ export const addUserIngredient = async (
   return await userIngredientRepo.save(newUserIngredient);
 };
 
-export const findUserIngredient = async (
-  userId: string,
-  ingredientId: string
-): Promise<UserIngredient | null> => {
+// Find a user ingredient by user ID and ingredient ID
+export const findUserIngredient = async (userId: string, ingredientId: string): Promise<UserIngredient | null> => {
   return await userIngredientRepo.findOne({
     where: {
       user: { id: userId },
@@ -40,6 +38,7 @@ export const findUserIngredient = async (
   });
 };
 
+// Find all user ingredients by ingredient ID
 export const findAllUserIngredientsByIngredient = async (
   userId: string,
   ingredientId: string
@@ -53,14 +52,13 @@ export const findAllUserIngredientsByIngredient = async (
   });
 };
 
-export const getUserIngredients = async (
-  userid: string
-): Promise<UserIngredient[]> => {
+// Get all user ingredients for a specific user
+export const getUserIngredients = async (userid: string): Promise<UserIngredient[]> => {
   return await userIngredientRepo.find({
     where: {
       user: { id: userid },
     },
-    relations: ["ingredient"],
+    relations: ["ingredient", "ingredient.category"],
     select: {
       id: true,
       unitQuantity: true,
@@ -73,6 +71,11 @@ export const getUserIngredients = async (
         Ing_name: true,
         Ing_quantity: true,
         Ing_quantity_units: true,
+        Ing_keywords: true,
+        category: {
+          id: true,
+          name: true,
+        },
       },
     },
   });
@@ -115,9 +118,8 @@ export const getPaginatedUserIngredients = async (
   return { data, total };
 };
 
-export const getUserIngredientById = async (
-  id: string
-): Promise<UserIngredient | null> => {
+// Get a user ingredient by ID
+export const getUserIngredientById = async (id: string): Promise<UserIngredient | null> => {
   return await userIngredientRepo.findOne({
     where: {
       id: id,
@@ -126,9 +128,8 @@ export const getUserIngredientById = async (
   });
 };
 
-export const getUserIngredientByIdQuickRestock = async (
-  id: string
-): Promise<UserIngredient | null> => {
+// Get a user ingredient by ID for quick restock (deprecated)
+export const getUserIngredientByIdQuickRestock = async (id: string): Promise<UserIngredient | null> => {
   return await userIngredientRepo.findOne({
     where: {
       id: id,
@@ -137,12 +138,12 @@ export const getUserIngredientByIdQuickRestock = async (
   });
 };
 
-export const updateUserIngredient = async (
-  userIngredient: UserIngredient
-): Promise<UserIngredient> => {
+// Update a user ingredient
+export const updateUserIngredient = async (userIngredient: UserIngredient): Promise<UserIngredient> => {
   return await userIngredientRepo.save(userIngredient);
 };
 
+// Delete a user ingredient by ID
 export const deleteUserIngredient = async (ids: string[]): Promise<void> => {
   await userIngredientRepo.delete(ids);
 };
